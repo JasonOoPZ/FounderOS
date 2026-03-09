@@ -1,0 +1,38 @@
+[
+  {
+    "vendor": "AWS",
+    "name": "AWS Activate Founders",
+    "value": "$100,000",
+    "category": "Cloud",
+    "eligibility": ["Funded", "Accelerator"],
+    "public_description": "Up to $100K in AWS Promotional Credit for AI/ML and Web3 startups.",
+    "locked_instructions": "1. Go to aws.amazon.com/activate.\n2. Apply for the Portfolio tier.\n3. Use our partner Org ID: FUSH-AWS-2026.\n4. Ensure your cap table reflects your recent funding."
+  },
+  {
+    "vendor": "Notion",
+    "name": "Notion for Startups",
+    "value": "$6,000",
+    "category": "Productivity",
+    "eligibility": ["Bootstrapped", "Funded", "Accelerator"],
+    "public_description": "Up to 6 months free of Notion Plus, including unlimited AI.",
+    "locked_instructions": "1. Go to notion.so/startups.\n2. Click 'Apply Now'.\n3. Select 'Partner' in the dropdown.\n4. Enter partner code: FUSH-NOTION-2026."
+  },
+  {
+    "vendor": "Google Cloud",
+    "name": "GCP Startups Scale Tier",
+    "value": "$350,000",
+    "category": "Cloud",
+    "eligibility": ["Funded", "Accelerator"],
+    "public_description": "Up to $350K USD in Google Cloud credits for scaling startups.",
+    "locked_instructions": "1. Visit cloud.google.com/startup.\n2. Apply for the 'Scale Tier'.\n3. You must upload your official Seed/Series A term sheet or accelerator acceptance letter."
+  },
+  {
+    "vendor": "Stripe",
+    "name": "Stripe Fee Waiver",
+    "value": "$50,000",
+    "category": "Finance",
+    "eligibility": ["Bootstrapped", "Funded", "Accelerator"],
+    "public_description": "$50,000 in fee-free processing to help you get off the ground.",
+    "locked_instructions": "1. Create a Stripe account.\n2. Navigate to Settings > Business settings > Programs.\n3. Enter the waiver code: STRIPE-FUSH-50K."
+  }
+]
