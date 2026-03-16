@@ -4,35 +4,1180 @@
     "name": "AWS Activate Founders",
     "value": "$100,000",
     "category": "Cloud",
-    "eligibility": ["Funded", "Accelerator"],
-    "public_description": "Up to $100K in AWS Promotional Credit for AI/ML and Web3 startups.",
-    "locked_instructions": "1. Go to aws.amazon.com/activate.\n2. Apply for the Portfolio tier.\n3. Use our partner Org ID: FUSH-AWS-2026.\n4. Ensure your cap table reflects your recent funding."
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "mustHave": true,
+    "public_description": "Up to $100K in AWS credits for pre-Series B startups. World's leading cloud platform.",
+    "locked_instructions": "1. Go to aws.amazon.com/startups/credits\n2. Apply for the Portfolio tier (requires VC/accelerator backing).\n3. Founders tier ($1K) is open to all.\n4. Have your AWS account on Paid Tier before applying.",
+    "applyUrl": "https://aws.amazon.com/startups/credits"
+  },
+  {
+    "vendor": "Google Cloud",
+    "name": "GCP for Startups",
+    "value": "$350,000",
+    "category": "Cloud",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "mustHave": true,
+    "public_description": "Up to $350K for AI-first startups. Includes Firebase, Maps, and Workspace credits.",
+    "locked_instructions": "1. Visit cloud.google.com/startup\n2. Apply for the Scale Tier (Series A or earlier).\n3. Upload your term sheet or accelerator acceptance letter.\n4. Standard tier gives $200K, AI-first startups get $350K.",
+    "applyUrl": "https://cloud.google.com/startup"
+  },
+  {
+    "vendor": "Microsoft Azure",
+    "name": "Azure Founders Hub",
+    "value": "$150,000",
+    "category": "Cloud",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "mustHave": true,
+    "public_description": "Up to $150K in Azure credits for investor-affiliated startups. Bootstrapped founders start with up to $5K and can level up based on traction. Also includes GitHub Enterprise and Microsoft 365.",
+    "locked_instructions": "1. Go to microsoft.com/en-us/startups\n2. Create a Founders Hub account, no investor backing needed to start.\n3. Bootstrapped founders get $1K-$5K free, investor-backed startups can unlock up to $150K.\n4. Includes GitHub Enterprise seats and Microsoft 365 licenses.",
+    "applyUrl": "https://www.microsoft.com/en-us/startups"
+  },
+  {
+    "vendor": "Cloudflare",
+    "name": "Cloudflare for Startups",
+    "value": "$250,000",
+    "category": "Networking",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "mustHave": true,
+    "public_description": "Up to $250K in credits for security, performance, and reliability services for one year.",
+    "locked_instructions": "1. Go to cloudflare.com/forstartups\n2. Sign up for a free Cloudflare account and add a valid credit card.\n3. Fill out the startup application form.\n4. Credits expire within 1 year, plan your usage accordingly.",
+    "applyUrl": "https://www.cloudflare.com/forstartups/"
   },
   {
     "vendor": "Notion",
     "name": "Notion for Startups",
     "value": "$6,000",
     "category": "Productivity",
-    "eligibility": ["Bootstrapped", "Funded", "Accelerator"],
-    "public_description": "Up to 6 months free of Notion Plus, including unlimited AI.",
-    "locked_instructions": "1. Go to notion.so/startups.\n2. Click 'Apply Now'.\n3. Select 'Partner' in the dropdown.\n4. Enter partner code: FUSH-NOTION-2026."
-  },
-  {
-    "vendor": "Google Cloud",
-    "name": "GCP Startups Scale Tier",
-    "value": "$350,000",
-    "category": "Cloud",
-    "eligibility": ["Funded", "Accelerator"],
-    "public_description": "Up to $350K USD in Google Cloud credits for scaling startups.",
-    "locked_instructions": "1. Visit cloud.google.com/startup.\n2. Apply for the 'Scale Tier'.\n3. You must upload your official Seed/Series A term sheet or accelerator acceptance letter."
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Up to 6 months free Notion Business Plan including Notion AI, worth up to $6,000.",
+    "locked_instructions": "1. Go to notion.com/startups\n2. Non-partner startups get 3 months free, apply directly.\n3. Partner-affiliated startups get 6 months free.\n4. Must be a new non-paying Notion customer with under 100 employees.",
+    "applyUrl": "https://www.notion.com/startups"
   },
   {
     "vendor": "Stripe",
-    "name": "Stripe Fee Waiver",
+    "name": "Stripe Startups Program",
     "value": "$50,000",
     "category": "Finance",
-    "eligibility": ["Bootstrapped", "Funded", "Accelerator"],
-    "public_description": "$50,000 in fee-free processing to help you get off the ground.",
-    "locked_instructions": "1. Create a Stripe account.\n2. Navigate to Settings > Business settings > Programs.\n3. Enter the waiver code: STRIPE-FUSH-50K."
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "mustHave": true,
+    "public_description": "$50,000 in fee-free processing for venture-backed startups just getting started.",
+    "locked_instructions": "1. Go to stripe.com/startups\n2. Apply, requires venture-backed status.\n3. Get financial benefits, expert resources, and founder community access.\n4. Also consider Stripe Atlas which includes $2,500 in Stripe credits plus $50K in partner perks.",
+    "applyUrl": "https://stripe.com/startups"
+  },
+  {
+    "vendor": "HubSpot",
+    "name": "HubSpot for Startups",
+    "value": "Up to 90% off",
+    "category": "CRM",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Up to 90% off HubSpot's marketing, sales, and CRM suite for eligible startups in their first year.",
+    "locked_instructions": "1. Go to hubspot.com/startups\n2. Check if your accelerator or VC is a HubSpot partner.\n3. Apply through your partner for up to 90% off year 1, 50% off year 2.\n4. Must be pre-Series B with under $2M raised.",
+    "applyUrl": "https://www.hubspot.com/startups"
+  },
+  {
+    "vendor": "Intercom",
+    "name": "Intercom Early Stage",
+    "value": "90% off",
+    "category": "Customer Support",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "90% discount on Intercom's AI-first customer service platform for early-stage startups.",
+    "locked_instructions": "1. Go to intercom.com/early-stage\n2. Must be under 2 years old with under $1M raised.\n3. Get 90% off for 12 months on the full Intercom suite.\n4. Includes Fin AI agent, ticketing, and messenger.",
+    "applyUrl": "https://www.intercom.com/early-stage"
+  },
+  {
+    "vendor": "Mixpanel",
+    "name": "Mixpanel for Startups",
+    "value": "$50,000",
+    "category": "Analytics",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "One year of Mixpanel Growth plan free for startups under 2 years old with under $5M raised.",
+    "locked_instructions": "1. Go to mixpanel.com/startups\n2. Must be under 2 years old with less than $5M raised.\n3. Get $50K in Mixpanel Growth plan credits for one year.\n4. Includes behavioral analytics and team collaboration features.",
+    "applyUrl": "https://mixpanel.com/startups/"
+  },
+  {
+    "vendor": "Airtable",
+    "name": "Airtable for Startups",
+    "value": "$500",
+    "category": "Productivity",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "$500 in credits for Airtable's flexible cloud database and workflow platform.",
+    "locked_instructions": "1. Apply via your accelerator or VC partner portal.\n2. Credits are applied directly to your Airtable account.\n3. Use for building internal tools, CRMs, and project trackers.",
+    "applyUrl": "https://airtable.com/shrwCbmn6VxPIqpWH"
+  },
+  {
+    "vendor": "DigitalOcean",
+    "name": "DigitalOcean Hatch",
+    "value": "$5,000",
+    "category": "Cloud",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "$5K+ in cloud credits plus perks from partners including Stripe and Cloudflare.",
+    "locked_instructions": "1. Go to digitalocean.com/hatch\n2. Apply as an early-stage startup, open to bootstrapped founders.\n3. Get 12 months of DigitalOcean credits plus bonus partner perks.\n4. Stack with Cloudflare and Stripe credits for maximum value.",
+    "applyUrl": "https://www.digitalocean.com/hatch"
+  },
+  {
+    "vendor": "Databricks",
+    "name": "Databricks Startup Program",
+    "value": "$50,000",
+    "category": "Data & AI",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Up to $50K in credits for data, analytics, and AI workloads on Databricks.",
+    "locked_instructions": "1. Go to databricks.com/company/startups\n2. Apply through a VC or accelerator partner.\n3. Get credits for Databricks lakehouse, ML, and AI workloads.\n4. Ideal for data-heavy AI startups processing large datasets.",
+    "applyUrl": "https://www.databricks.com/company/startups"
+  },
+  {
+    "vendor": "Datadog",
+    "name": "Datadog for Startups",
+    "value": "$800/year",
+    "category": "Monitoring",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "$800 annually in monitoring and observability credits for eligible startups.",
+    "locked_instructions": "1. Go to datadoghq.com/partner/datadog-for-startups\n2. Apply directly, open to early-stage startups.\n3. Get $800/year in monitoring credits for infrastructure and APM.\n4. Upgrade path available as you scale.",
+    "applyUrl": "https://www.datadoghq.com/partner/datadog-for-startups/"
+  },
+  {
+    "vendor": "Zendesk",
+    "name": "Zendesk for Startups",
+    "value": "6 months free",
+    "category": "Customer Support",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "6 months free access to Zendesk Suite for qualifying early-stage startups.",
+    "locked_instructions": "1. Go to zendesk.com/campaign/partner-startups\n2. Apply through a partner program or directly.\n3. Get 6 months free on Zendesk Suite including ticketing and live chat.\n4. Must be under 2 years old with under $1M raised.",
+    "applyUrl": "https://www.zendesk.com/campaign/partner-startups/"
+  },
+  {
+    "vendor": "Algolia",
+    "name": "Algolia for Startups",
+    "value": "$10,000",
+    "category": "Search",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "$10,000 in Algolia search credits valid for 12 months for early-stage startups.",
+    "locked_instructions": "1. Go to algolia.com/startups\n2. Apply directly, open to early-stage startups.\n3. Get $10K in search API credits for 12 months.\n4. Includes access to AI-powered search and recommendations.",
+    "applyUrl": "https://www.algolia.com/startups/"
+  },
+  {
+    "vendor": "Amplitude",
+    "name": "Amplitude Startup Scholarship",
+    "value": "12 months free",
+    "category": "Analytics",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Free access to Amplitude's Growth plan for 12 months through the Startup Scholarship.",
+    "locked_instructions": "1. Go to amplitude.com/startups\n2. Apply for the Startup Scholarship, open to early-stage companies.\n3. Get 12 months free on the Growth plan with behavioral cohorting.\n4. Must be under 2 years old with under $5M raised.",
+    "applyUrl": "https://amplitude.com/startups"
+  },
+  {
+    "vendor": "Segment",
+    "name": "Segment Startup Program",
+    "value": "$25,000",
+    "category": "Analytics",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Full access to Segment's Team Plan worth up to $25,000 free for up to two years.",
+    "locked_instructions": "1. Go to segment.com/industry/startups\n2. Apply through a VC or accelerator partner.\n3. Get the full Team Plan free for up to 2 years.\n4. Must be Series A or earlier with active product.",
+    "applyUrl": "https://segment.com/industry/startups/"
+  },
+  {
+    "vendor": "Sentry",
+    "name": "Sentry for Startups",
+    "value": "6 months free",
+    "category": "Monitoring",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "6 months free on Sentry Teams plan plus 10% annual discount for qualifying startups.",
+    "locked_instructions": "1. Go to sentry.io/for/startups\n2. Apply directly, open to all early-stage startups.\n3. Get 6 months free on Teams plan including error monitoring and performance.\n4. 10% ongoing discount after the free period ends.",
+    "applyUrl": "https://sentry.io/for/startups/"
+  },
+  {
+    "vendor": "GitHub",
+    "name": "GitHub Enterprise via Azure",
+    "value": "20 free seats",
+    "category": "Dev Tools",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "20 free seats of GitHub Enterprise via Microsoft for Startups Founders Hub.",
+    "locked_instructions": "1. Sign up at microsoft.com/en-us/startups (Founders Hub).\n2. GitHub Enterprise seats are included automatically.\n3. Also get GitHub Copilot seats bundled in.\n4. No separate application needed, comes with Azure credits.",
+    "applyUrl": "https://www.microsoft.com/en-us/startups"
+  },
+  {
+    "vendor": "GitLab",
+    "name": "GitLab for Startups",
+    "value": "12 months free",
+    "category": "Dev Tools",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "12 months free GitLab Ultimate for qualifying early-stage startups.",
+    "locked_instructions": "1. Go to about.gitlab.com/solutions/startups\n2. Apply directly, open to startups under 3 years old.\n3. Get GitLab Ultimate free for 12 months including CI/CD and security scanning.\n4. Must have under $3M in funding.",
+    "applyUrl": "https://about.gitlab.com/solutions/startups/"
+  },
+  {
+    "vendor": "Linear",
+    "name": "Linear for Startups",
+    "value": "6 months free",
+    "category": "Project Management",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "6 months free on Linear's streamlined issue tracking and project management tool.",
+    "locked_instructions": "1. Go to linear.app/startups\n2. Apply directly, open to early-stage startups.\n3. Get 6 months free on Linear's full plan.\n4. Perfect for engineering teams wanting fast keyboard-driven project management.",
+    "applyUrl": "https://linear.app/startups"
+  },
+  {
+    "vendor": "Miro",
+    "name": "Miro for Startups",
+    "value": "$1,500",
+    "category": "Collaboration",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "$1,000-$1,500 in credits for Miro's online collaborative whiteboard platform.",
+    "locked_instructions": "1. Go to miro.com/startups\n2. Apply through an accelerator or VC partner.\n3. Get $1,000-$1,500 in Miro credits for the team plan.\n4. Ideal for remote teams doing design sprints and brainstorming.",
+    "applyUrl": "https://miro.com/startups/"
+  },
+  {
+    "vendor": "Asana",
+    "name": "Asana for Startups",
+    "value": "12 months free",
+    "category": "Project Management",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "12 months free Advanced plan access for eligible early-stage startups.",
+    "locked_instructions": "1. Go to asana.com/startups\n2. Apply directly, open to startups under 2 years old.\n3. Get 12 months free on Asana Advanced including timelines and goals.\n4. Must have under $1M in funding.",
+    "applyUrl": "https://asana.com/startups"
+  },
+  {
+    "vendor": "ClickUp",
+    "name": "ClickUp for Startups",
+    "value": "20% off",
+    "category": "Productivity",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "20% off ClickUp plans for startups via partner programs and accelerators.",
+    "locked_instructions": "1. Go to clickup.com/teams/startups\n2. Apply through your accelerator or VC partner.\n3. Get 20% off any ClickUp plan for your team.\n4. ClickUp also has a generous free tier to start with.",
+    "applyUrl": "https://clickup.com/teams/startups"
+  },
+  {
+    "vendor": "Retool",
+    "name": "Retool for Startups",
+    "value": "12 months free",
+    "category": "Dev Tools",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Free 12-month access to Retool to build internal tools without dedicated engineering time.",
+    "locked_instructions": "1. Go to retool.com/startups\n2. Must be Series A or earlier, apply through a VC or accelerator.\n3. Get Retool free for 12 months including unlimited apps.\n4. Upgrade to paid plan first, then apply for the retroactive discount.",
+    "applyUrl": "https://retool.com/startups"
+  },
+  {
+    "vendor": "Webflow",
+    "name": "Webflow for Startups",
+    "value": "12 months free",
+    "category": "No-Code",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Free CMS site plan for 12 months for qualifying startups.",
+    "locked_instructions": "1. Go to webflow.com/startups\n2. Apply directly, open to early-stage startups.\n3. Get the CMS site plan free for 12 months.\n4. Ideal for building marketing sites without engineering resources.",
+    "applyUrl": "https://webflow.com/startups"
+  },
+  {
+    "vendor": "Framer",
+    "name": "Framer for Startups",
+    "value": "50% off",
+    "category": "Design",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "50% off Framer plans for startups building modern websites and landing pages.",
+    "locked_instructions": "1. Go to framer.com/startups\n2. Apply directly, open to early-stage startups.\n3. Get 50% off any Framer plan for your team.\n4. Great for building fast animated marketing sites.",
+    "applyUrl": "https://www.framer.com/startups/"
+  },
+  {
+    "vendor": "PostHog",
+    "name": "PostHog for Startups",
+    "value": "$50,000",
+    "category": "Analytics",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "$50K in credits for PostHog's open-source product analytics, session recording, and feature flags.",
+    "locked_instructions": "1. Go to posthog.com/startups\n2. Apply directly, open to startups under 2 years old with under $5M raised.\n3. Get $50K in credits covering analytics, session replay, and feature flags.\n4. PostHog is self-hostable, great for privacy-conscious startups.",
+    "applyUrl": "https://posthog.com/startups"
+  },
+  {
+    "vendor": "MongoDB",
+    "name": "MongoDB for Startups",
+    "value": "$500",
+    "category": "Database",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "$500 in MongoDB Atlas credits plus access to technical advisors for early-stage startups.",
+    "locked_instructions": "1. Go to mongodb.com/startups\n2. Apply directly, open to Series A or earlier startups.\n3. Get $500 in Atlas credits plus one-on-one technical advice.\n4. AI startups may qualify for extra credits through the AI Innovators program.",
+    "applyUrl": "https://www.mongodb.com/startups"
+  },
+  {
+    "vendor": "Redis",
+    "name": "Redis for Startups",
+    "value": "$10,000",
+    "category": "Database",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "$10,000 in Redis Cloud credits for startups building with in-memory data structures.",
+    "locked_instructions": "1. Go to redis.com/redis-for-startups\n2. Apply through a VC or accelerator partner.\n3. Get $10K in Redis Cloud credits for caching and real-time data.\n4. Ideal for startups needing low-latency session and queue management.",
+    "applyUrl": "https://redis.com/redis-for-startups/"
+  },
+  {
+    "vendor": "Neon",
+    "name": "Neon for Startups",
+    "value": "$100,000",
+    "category": "Database",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "mustHave": true,
+    "public_description": "Up to $100K in serverless PostgreSQL credits, especially generous for YC startups.",
+    "locked_instructions": "1. Go to neon.tech/startups\n2. Apply through a VC or accelerator, YC startups get the highest tier.\n3. Get up to $100K in serverless Postgres credits.\n4. Neon supports branching databases, great for dev/staging environments.",
+    "applyUrl": "https://neon.tech/startups"
+  },
+  {
+    "vendor": "Pinecone",
+    "name": "Pinecone for Startups",
+    "value": "$100/month",
+    "category": "Database",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "$100/month in free credits for Pinecone's vector database for AI applications.",
+    "locked_instructions": "1. Go to pinecone.io/startups\n2. Apply directly, open to early-stage AI startups.\n3. Get $100/month in vector database credits for RAG and semantic search.\n4. Stack with OpenAI credits for a complete AI stack.",
+    "applyUrl": "https://www.pinecone.io/startups/"
+  },
+  {
+    "vendor": "OpenAI",
+    "name": "OpenAI Startup Credits",
+    "value": "$25,000",
+    "category": "AI",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "$25,000 in OpenAI API credits through the Startup Fund program for early-stage startups.",
+    "locked_instructions": "1. Go to openai.com/startups\n2. Apply through a VC or accelerator partner.\n3. Get $25K in API credits for GPT-4, DALL-E, and Whisper.\n4. Credits valid for 12 months, plan your usage carefully.",
+    "applyUrl": "https://openai.com/startups"
+  },
+  {
+    "vendor": "Perplexity",
+    "name": "Perplexity for Startups",
+    "value": "$5,000 + 6mo free",
+    "category": "AI",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "6 months free Enterprise Pro plus $5K in API credits for qualifying startups.",
+    "locked_instructions": "1. Go to perplexity.ai/hub/blog/perplexity-for-startups\n2. Apply through a VC or accelerator partner.\n3. Get 6 months free Enterprise Pro plus $5K in API credits.\n4. Ideal for startups building search and research tools.",
+    "applyUrl": "https://www.perplexity.ai/hub/blog/perplexity-for-startups"
+  },
+  {
+    "vendor": "ElevenLabs",
+    "name": "ElevenLabs for Startups",
+    "value": "$10,000",
+    "category": "AI",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Up to $10K in credits for ElevenLabs' AI voice generation and text-to-speech platform.",
+    "locked_instructions": "1. Go to elevenlabs.io/startups\n2. Apply directly, open to early-stage startups.\n3. Get up to $10K in voice generation credits.\n4. Ideal for startups building voice AI, podcasts, or audiobooks.",
+    "applyUrl": "https://elevenlabs.io/startups"
+  },
+  {
+    "vendor": "AssemblyAI",
+    "name": "AssemblyAI for Startups",
+    "value": "$150,000",
+    "category": "AI",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "mustHave": true,
+    "public_description": "Up to $150K in free API credits for speech recognition and audio intelligence.",
+    "locked_instructions": "1. Go to assemblyai.com/startups\n2. Apply through a VC or accelerator partner.\n3. Get up to $150K in speech-to-text and audio intelligence credits.\n4. Includes speaker diarization, sentiment analysis, and auto chapters.",
+    "applyUrl": "https://www.assemblyai.com/startups"
+  },
+  {
+    "vendor": "Deepgram",
+    "name": "Deepgram for Startups",
+    "value": "$100,000",
+    "category": "AI",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "mustHave": true,
+    "public_description": "Up to $100K in speech recognition and voice AI credits for startups.",
+    "locked_instructions": "1. Go to deepgram.com/startups\n2. Apply through a VC or accelerator partner.\n3. Get up to $100K in real-time and batch transcription credits.\n4. Deepgram is faster and cheaper than Whisper at scale.",
+    "applyUrl": "https://deepgram.com/startups"
+  },
+  {
+    "vendor": "Mistral",
+    "name": "Mistral for Startups",
+    "value": "$10,000",
+    "category": "AI",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Up to $10K in API credits for Mistral's open and commercial language models.",
+    "locked_instructions": "1. Go to mistral.ai/news/mistral-for-startups\n2. Apply through a VC or accelerator partner.\n3. Get up to $10K in credits for Mistral's API including Mistral Large and Codestral.\n4. Great alternative to OpenAI for cost-sensitive workloads.",
+    "applyUrl": "https://mistral.ai/news/mistral-for-startups/"
+  },
+  {
+    "vendor": "Cerebras",
+    "name": "Cerebras Startup Program",
+    "value": "$22,500",
+    "category": "AI",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Up to $22.5K in ultra-fast AI inference credits via Cerebras' startup program.",
+    "locked_instructions": "1. Go to cerebras.ai/startups\n2. Apply through a VC or accelerator partner.\n3. Get up to $22.5K in credits for the world's fastest AI inference.\n4. Ideal for latency-sensitive AI applications.",
+    "applyUrl": "https://cerebras.ai/startups"
+  },
+  {
+    "vendor": "Fireworks AI",
+    "name": "Fireworks AI for Startups",
+    "value": "$100,000",
+    "category": "AI",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "mustHave": true,
+    "public_description": "Up to $100K in generative AI inference credits for startups building on Fireworks.",
+    "locked_instructions": "1. Go to fireworks.ai/startups\n2. Apply through a VC or accelerator partner.\n3. Get up to $100K in credits for fast cheap LLM inference.\n4. Supports Llama, Mistral, and other open-source models.",
+    "applyUrl": "https://fireworks.ai/startups"
+  },
+  {
+    "vendor": "xAI",
+    "name": "xAI Startup Credits",
+    "value": "$25,000",
+    "category": "AI",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Up to $25K in API credits for xAI's Grok models for qualifying startups.",
+    "locked_instructions": "1. Go to x.ai/api\n2. Apply for the startup credit program.\n3. Get up to $25K in credits for Grok model API access.\n4. Good alternative for startups wanting frontier models outside OpenAI.",
+    "applyUrl": "https://x.ai/api"
+  },
+  {
+    "vendor": "Nebius",
+    "name": "Nebius AI Cloud",
+    "value": "$150,000",
+    "category": "AI",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "mustHave": true,
+    "public_description": "Up to $150K in cloud credits for AI companies, including GPU compute.",
+    "locked_instructions": "1. Go to nebius.com/startups\n2. Apply through a VC or accelerator partner.\n3. Get up to $150K in GPU cloud credits for AI training and inference.\n4. Strong NVIDIA H100 availability, great for model training startups.",
+    "applyUrl": "https://nebius.com/startups"
+  },
+  {
+    "vendor": "HeyGen",
+    "name": "HeyGen for Startups",
+    "value": "90% off",
+    "category": "AI",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Up to 90% off HeyGen's AI video generation platform for qualifying startups.",
+    "locked_instructions": "1. Go to heygen.com/startups\n2. Apply directly, open to early-stage startups.\n3. Get up to 90% off AI video generation and avatar creation.\n4. Great for marketing teams wanting to scale video content.",
+    "applyUrl": "https://www.heygen.com/startups"
+  },
+  {
+    "vendor": "Preferences AI",
+    "name": "AI Market Research Credit",
+    "value": "$1,000",
+    "category": "AI",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Preferences AI combines real customer surveys with AI agents trained on thousands of lifelike personas to deliver instant market research. Skip weeks of waiting and get real-time insights into what your customers actually want.",
+    "locked_instructions": "1. Visit preferencesai.io\n2. Click Request Demo and mention Founder OS in your message.\n3. You will receive $1,000 in platform credits upon onboarding.\n4. Use credits for surveys, AI persona research, and real-time market analysis.",
+    "applyUrl": "https://www.preferencesai.io"
+  },
+  {
+    "vendor": "Airbyte",
+    "name": "Airbyte for Startups",
+    "value": "$75,000",
+    "category": "Data",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Up to $75K in Airbyte Cloud credits for data integration and ELT pipelines.",
+    "locked_instructions": "1. Go to airbyte.com/startups\n2. Apply through a VC or accelerator partner.\n3. Get up to $75K in credits for 300+ data connectors.\n4. Ideal for startups building data pipelines and warehouses.",
+    "applyUrl": "https://airbyte.com/startups"
+  },
+  {
+    "vendor": "Fivetran",
+    "name": "Fivetran for Startups",
+    "value": "$50,000",
+    "category": "Data",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "$50K in free data integration credits for 12 months for eligible startups.",
+    "locked_instructions": "1. Go to fivetran.com/partners/startups\n2. Apply through a VC or accelerator partner.\n3. Get $50K in credits for automated data pipelines.\n4. Connects to 500+ data sources including Salesforce, Stripe, and databases.",
+    "applyUrl": "https://www.fivetran.com/partners/startups"
+  },
+  {
+    "vendor": "IBM Cloud",
+    "name": "IBM Startup Program",
+    "value": "$120,000",
+    "category": "Cloud",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Up to $120K in enterprise-grade IBM Cloud credits including AI tooling.",
+    "locked_instructions": "1. Go to developer.ibm.com/startups\n2. Apply through IBM's startup program.\n3. Get up to $120K in credits including Watson AI and IBM Cloud services.\n4. Particularly valuable for startups targeting regulated industries.",
+    "applyUrl": "https://developer.ibm.com/startups/"
+  },
+  {
+    "vendor": "Vultr",
+    "name": "Vultr for Startups",
+    "value": "$100,000",
+    "category": "Cloud",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Up to $100K in cloud and GPU compute credits for startups migrating or building.",
+    "locked_instructions": "1. Go to vultr.com and apply for startup credits.\n2. Get up to $100K for cloud infrastructure and GPU compute.\n3. Vultr offers competitive GPU pricing, good for AI inference workloads.\n4. Stack with other cloud credits to maximize runway.",
+    "applyUrl": "https://www.vultr.com/promo/try250/"
+  },
+  {
+    "vendor": "Koyeb",
+    "name": "Koyeb for Startups",
+    "value": "$30,000",
+    "category": "Cloud",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Up to $30K in compute credits for Koyeb's serverless cloud platform.",
+    "locked_instructions": "1. Go to koyeb.com/startups\n2. Apply directly, open to early-stage startups.\n3. Get up to $30K in serverless compute credits.\n4. Koyeb auto-scales globally with zero config required.",
+    "applyUrl": "https://www.koyeb.com/startups"
+  },
+  {
+    "vendor": "Scaleway",
+    "name": "Scaleway Startup Program",
+    "value": "36,000 EUR",
+    "category": "Cloud",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Up to 36K EUR in credits including NVIDIA H100 GPU access and free consulting support.",
+    "locked_instructions": "1. Go to scaleway.com/en/startup-program\n2. Apply directly, open to early-stage startups.\n3. Get up to 36K EUR in credits including H100 GPU access.\n4. Includes free consulting and a strong European startup community.",
+    "applyUrl": "https://www.scaleway.com/en/startup-program/"
+  },
+  {
+    "vendor": "Huawei Cloud",
+    "name": "Huawei Cloud for Startups",
+    "value": "$150,000",
+    "category": "Cloud",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Up to $150K in cloud credits plus mentorship for qualifying startups.",
+    "locked_instructions": "1. Go to huaweicloud.com/en-us/about/startup_program.html\n2. Apply through Huawei's startup program.\n3. Get up to $150K in cloud credits plus mentorship and go-to-market support.\n4. Best for startups targeting Asian markets.",
+    "applyUrl": "https://www.huaweicloud.com/en-us/about/startup_program.html"
+  },
+  {
+    "vendor": "Tencent Cloud",
+    "name": "Tencent Cloud for Startups",
+    "value": "$100,000",
+    "category": "Cloud",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Up to $100K in cloud service vouchers for qualifying startups.",
+    "locked_instructions": "1. Go to intl.cloud.tencent.com/act/pro/startup\n2. Apply through Tencent's startup program.\n3. Get up to $100K in cloud vouchers for compute, storage, and AI services.\n4. Best for startups targeting Asian markets or needing WeChat integration.",
+    "applyUrl": "https://intl.cloud.tencent.com/act/pro/startup"
+  },
+  {
+    "vendor": "Aiven",
+    "name": "Aiven for Startups",
+    "value": "$500",
+    "category": "Cloud",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "$500 in managed cloud database credits across PostgreSQL, Kafka, and more.",
+    "locked_instructions": "1. Go to aiven.io/startups\n2. Apply directly, open to early-stage startups.\n3. Get $500 in credits for managed databases including Postgres and Kafka.\n4. Great for teams wanting zero-ops database management.",
+    "applyUrl": "https://aiven.io/startups"
+  },
+  {
+    "vendor": "Akamai",
+    "name": "Akamai Cloud Linode",
+    "value": "$10,000",
+    "category": "Cloud",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Up to $10K in Akamai Cloud credits for qualifying early-stage startups.",
+    "locked_instructions": "1. Go to linode.com/linode-for-startups\n2. Apply directly, open to early-stage startups.\n3. Get up to $10K in cloud credits for compute and storage.\n4. Good budget alternative to AWS/GCP for straightforward workloads.",
+    "applyUrl": "https://www.linode.com/linode-for-startups/"
+  },
+  {
+    "vendor": "Appwrite",
+    "name": "Appwrite for Startups",
+    "value": "6 months free",
+    "category": "Dev Tools",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "6 months free on Appwrite Pro, open-source backend platform for startups.",
+    "locked_instructions": "1. Go to appwrite.io/startups\n2. Apply directly, open to all early-stage startups.\n3. Get 6 months free on Appwrite Pro including auth, databases, and storage.\n4. Self-hostable alternative to Firebase.",
+    "applyUrl": "https://appwrite.io/startups"
+  },
+  {
+    "vendor": "Pulumi",
+    "name": "Pulumi for Startups",
+    "value": "$10,000",
+    "category": "Dev Tools",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Up to $10K in credits for Pulumi's infrastructure-as-code platform.",
+    "locked_instructions": "1. Go to pulumi.com/startups\n2. Apply through a VC or accelerator partner.\n3. Get up to $10K in credits for infrastructure-as-code on any cloud.\n4. Supports TypeScript, Python, Go, no YAML required.",
+    "applyUrl": "https://www.pulumi.com/startups/"
+  },
+  {
+    "vendor": "CircleCI",
+    "name": "CircleCI for Startups",
+    "value": "$2,500",
+    "category": "Dev Tools",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "$2,500 in CI/CD credits for startups building with CircleCI pipelines.",
+    "locked_instructions": "1. Go to circleci.com/startups\n2. Apply directly, open to early-stage startups.\n3. Get $2,500 in CI/CD credits for automated testing and deployment.\n4. Stack with GitHub Enterprise for a complete DevOps setup.",
+    "applyUrl": "https://circleci.com/startups/"
+  },
+  {
+    "vendor": "Temporal",
+    "name": "Temporal for Startups",
+    "value": "12 months free",
+    "category": "Dev Tools",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "12 months free on Temporal Cloud for durable workflow orchestration.",
+    "locked_instructions": "1. Go to temporal.io/startup-program\n2. Apply through a VC or accelerator partner.\n3. Get 12 months free on Temporal Cloud for workflow orchestration.\n4. Essential for startups building reliable background jobs and long-running processes.",
+    "applyUrl": "https://temporal.io/startup-program"
+  },
+  {
+    "vendor": "JetBrains",
+    "name": "JetBrains for Startups",
+    "value": "1 year free",
+    "category": "Dev Tools",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Free 1-year access to all JetBrains IDEs for startups via their startup program.",
+    "locked_instructions": "1. Go to jetbrains.com/community/startups\n2. Apply directly, open to startups under 5 years old with under $1M raised.\n3. Get all JetBrains IDEs free for 1 year including IntelliJ, WebStorm, and PyCharm.\n4. Renewable annually while you qualify.",
+    "applyUrl": "https://www.jetbrains.com/community/startups/"
+  },
+  {
+    "vendor": "Cursor",
+    "name": "Cursor Pro for Startups",
+    "value": "1 year free Pro",
+    "category": "Dev Tools",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Free 1-year Cursor Pro subscription for students and qualifying startups.",
+    "locked_instructions": "1. Go to cursor.com/students\n2. Apply with a valid student or startup email.\n3. Get Cursor Pro free for 1 year including unlimited AI completions.\n4. The best AI code editor used by thousands of YC startups.",
+    "applyUrl": "https://www.cursor.com/students"
+  },
+  {
+    "vendor": "Auth0",
+    "name": "Auth0 for Startups",
+    "value": "1 year free",
+    "category": "Dev Tools",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "1-year free access to Auth0's B2B Professional Plan for eligible startups.",
+    "locked_instructions": "1. Go to auth0.com/startups\n2. Apply through a VC or accelerator partner.\n3. Get 1 year free on the B2B Professional Plan including SSO and MFA.\n4. Ideal for B2B SaaS startups needing enterprise auth features.",
+    "applyUrl": "https://auth0.com/startups"
+  },
+  {
+    "vendor": "Vanta",
+    "name": "Vanta for Startups",
+    "value": "$1,000 off",
+    "category": "Compliance",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Up to $1,000 off SOC 2 and ISO 27001 compliance automation for early-stage startups.",
+    "locked_instructions": "1. Go to vanta.com/partners/startups\n2. Apply through a VC or accelerator partner.\n3. Get up to $1,000 off Vanta's compliance automation platform.\n4. SOC 2 is often required by enterprise customers, get it early.",
+    "applyUrl": "https://www.vanta.com/partners/startups"
+  },
+  {
+    "vendor": "1Password",
+    "name": "1Password for Startups",
+    "value": "6 months free",
+    "category": "Security",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "6 months free 1Password Teams for qualifying startups and their employees.",
+    "locked_instructions": "1. Go to 1password.com/for-teams/startups\n2. Apply directly, open to early-stage startups.\n3. Get 6 months free on 1Password Teams for your whole team.\n4. Secure shared credentials from day one, avoid password sharing over Slack.",
+    "applyUrl": "https://1password.com/for-teams/startups/"
+  },
+  {
+    "vendor": "Chargebee",
+    "name": "Chargebee for Startups",
+    "value": "40% off Y1",
+    "category": "Finance",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "40% off year one on Chargebee's subscription billing and revenue management platform.",
+    "locked_instructions": "1. Go to chargebee.com/startups\n2. Apply directly, open to early-stage startups.\n3. Get 40% off year 1 on any Chargebee plan.\n4. Best for SaaS startups with recurring subscriptions needing dunning and MRR tracking.",
+    "applyUrl": "https://www.chargebee.com/startups/"
+  },
+  {
+    "vendor": "Stripe Atlas",
+    "name": "Stripe Atlas + Perks",
+    "value": "$50,000+ perks",
+    "category": "Finance",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Incorporate in Delaware plus $2,500 Stripe credits plus $50K+ in partner discounts from AWS, Mercury, and more.",
+    "locked_instructions": "1. Go to stripe.com/atlas, $500 one-time fee.\n2. Incorporate your Delaware C-Corp or LLC in 2 business days.\n3. Get $2,500 in Stripe credits plus $50K+ in partner perks automatically.\n4. Atlas also auto-files your 83(b) election, saving you thousands in taxes.",
+    "applyUrl": "https://stripe.com/atlas"
+  },
+  {
+    "vendor": "Grafana",
+    "name": "Grafana for Startups",
+    "value": "100,000 EUR",
+    "category": "Monitoring",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Up to 100K EUR in Grafana Cloud credits for 1 year for qualifying startups.",
+    "locked_instructions": "1. Go to grafana.com/startups\n2. Apply through a VC or accelerator partner.\n3. Get up to 100K EUR in Grafana Cloud credits for metrics, logs, and traces.\n4. Includes Grafana OnCall and Grafana k6 for load testing.",
+    "applyUrl": "https://grafana.com/startups/"
+  },
+  {
+    "vendor": "Statsig",
+    "name": "Statsig for Startups",
+    "value": "$50,000",
+    "category": "Analytics",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "$50K in credits for feature flags, A/B testing, and product analytics.",
+    "locked_instructions": "1. Go to statsig.com/startups\n2. Apply directly, open to early-stage startups.\n3. Get $50K in credits for experimentation and feature management.\n4. Built by ex-Facebook engineers, industry-leading A/B testing platform.",
+    "applyUrl": "https://www.statsig.com/startups"
+  },
+  {
+    "vendor": "Customer.io",
+    "name": "Customer.io for Startups",
+    "value": "50% off",
+    "category": "Marketing",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Up to 50% off Customer.io's messaging automation platform for early-stage startups.",
+    "locked_instructions": "1. Go to customer.io/startups\n2. Apply directly, open to early-stage startups.\n3. Get up to 50% off for 12 months on email, push, and SMS automation.\n4. Great for product-led growth teams wanting behavioral email triggers.",
+    "applyUrl": "https://customer.io/startups/"
+  },
+  {
+    "vendor": "Mailchimp",
+    "name": "Mailchimp Free Tier",
+    "value": "Free tier",
+    "category": "Marketing",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Free plan for up to 500 contacts and 1,000 emails per month to grow your audience.",
+    "locked_instructions": "1. Go to mailchimp.com and sign up for free.\n2. Free tier includes 500 contacts and 1,000 emails per month.\n3. No startup application needed, available to everyone.\n4. Upgrade to Essentials at $13/month when you outgrow the free tier.",
+    "applyUrl": "https://mailchimp.com/pricing/"
+  },
+  {
+    "vendor": "Typeform",
+    "name": "Typeform for Startups",
+    "value": "50% off",
+    "category": "Forms",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "50% off Typeform plans for startups via accelerator and partner programs.",
+    "locked_instructions": "1. Go to typeform.com/startups\n2. Apply through your accelerator or VC partner.\n3. Get 50% off any Typeform plan for your team.\n4. Great for user research surveys, waitlists, and onboarding flows.",
+    "applyUrl": "https://www.typeform.com/startups/"
+  },
+  {
+    "vendor": "Mux",
+    "name": "Mux for Startups",
+    "value": "$500",
+    "category": "Media",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "$500 in Mux credits for video streaming and processing infrastructure.",
+    "locked_instructions": "1. Go to mux.com/startups\n2. Apply directly, open to early-stage startups.\n3. Get $500 in credits for video upload, processing, and streaming.\n4. Used by thousands of startups building video products.",
+    "applyUrl": "https://mux.com/startups/"
+  },
+  {
+    "vendor": "Freshworks",
+    "name": "Freshworks for Startups",
+    "value": "$10,000",
+    "category": "CRM",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Up to $10K in credits on Freshworks' CRM, support, and IT management suite.",
+    "locked_instructions": "1. Go to freshworks.com/freshworks-for-startups\n2. Apply directly, open to early-stage startups.\n3. Get up to $10K in credits across Freshdesk, Freshsales, and Freshservice.\n4. Good HubSpot alternative with a more generous free tier.",
+    "applyUrl": "https://www.freshworks.com/freshworks-for-startups/"
+  },
+  {
+    "vendor": "Attio",
+    "name": "Attio for Startups",
+    "value": "80% off",
+    "category": "CRM",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Up to 80% off Annual Pro Plan plus $5,000 credit for early-stage startups.",
+    "locked_instructions": "1. Go to attio.com/startups\n2. Apply through a VC or accelerator partner.\n3. Get up to 80% off the Annual Pro Plan plus $5K in credits.\n4. Attio is a modern CRM built for fast-growing B2B startups.",
+    "applyUrl": "https://attio.com/startups"
+  },
+  {
+    "vendor": "Coda",
+    "name": "Coda for Startups",
+    "value": "$1,000",
+    "category": "Productivity",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "6-month free Team plan worth up to $1,000 for qualifying startups.",
+    "locked_instructions": "1. Go to coda.io/for-startups\n2. Apply directly, open to early-stage startups.\n3. Get 6 months free on Coda Team plan including automations and Packs.\n4. Great Notion alternative with more powerful database and automation features.",
+    "applyUrl": "https://coda.io/for-startups"
+  },
+  {
+    "vendor": "Make",
+    "name": "Make for Startups",
+    "value": "$1,100",
+    "category": "Automation",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Up to $1,100 in operational credits for Make's visual automation platform.",
+    "locked_instructions": "1. Go to make.com/en/startups\n2. Apply directly, open to early-stage startups.\n3. Get up to $1,100 in operational credits for workflow automation.\n4. Make is more powerful than Zapier for complex multi-step automations.",
+    "applyUrl": "https://www.make.com/en/startups"
+  },
+  {
+    "vendor": "n8n",
+    "name": "n8n for Startups",
+    "value": "60% off",
+    "category": "Automation",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "60% off n8n Cloud for startups building open-source workflow automations.",
+    "locked_instructions": "1. Go to n8n.io/startups\n2. Apply directly, open to early-stage startups.\n3. Get 60% off n8n Cloud for 12 months.\n4. Self-hostable alternative to Zapier, great for privacy-conscious teams.",
+    "applyUrl": "https://n8n.io/startups/"
+  },
+  {
+    "vendor": "Zapier",
+    "name": "Zapier for Startups",
+    "value": "25% off",
+    "category": "Automation",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "25% off Zapier plans for startups via partner and accelerator programs.",
+    "locked_instructions": "1. Go to zapier.com/startups\n2. Apply through your accelerator or VC partner.\n3. Get 25% off any Zapier plan for your team.\n4. Zapier connects 6,000+ apps, best for non-technical founders.",
+    "applyUrl": "https://zapier.com/startups"
+  },
+  {
+    "vendor": "Apollo",
+    "name": "Apollo for Startups",
+    "value": "50% off annual",
+    "category": "Sales",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "50% discount on Apollo's annual plans for B2B sales intelligence and outreach.",
+    "locked_instructions": "1. Go to apollo.io/startups\n2. Apply directly, open to early-stage startups.\n3. Get 50% off Apollo's annual plan including contact database and sequencing.\n4. Apollo has 275M+ contacts, essential for B2B outbound sales.",
+    "applyUrl": "https://www.apollo.io/startups"
+  },
+  {
+    "vendor": "Clay",
+    "name": "Clay for Startups",
+    "value": "1,200 credits/year",
+    "category": "Sales",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "100 free Clay credits monthly (1,200 annually) for data enrichment and outreach.",
+    "locked_instructions": "1. Go to clay.com/startups\n2. Apply directly, open to early-stage startups.\n3. Get 100 free credits per month for data enrichment and personalized outreach.\n4. Clay is the best tool for building hyper-personalized outbound campaigns.",
+    "applyUrl": "https://www.clay.com/startups"
+  },
+  {
+    "vendor": "Remote",
+    "name": "Remote for Startups",
+    "value": "20% off",
+    "category": "HR",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Up to 20% discount on Remote's global HR and payroll platform for startups.",
+    "locked_instructions": "1. Go to remote.com/startups\n2. Apply directly, open to early-stage startups.\n3. Get up to 20% off global HR, payroll, and contractor management.\n4. Essential for startups hiring internationally from day one.",
+    "applyUrl": "https://remote.com/startups"
+  },
+  {
+    "vendor": "QuickNode",
+    "name": "QuickNode for Startups",
+    "value": "$200,000",
+    "category": "Web3",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Up to $200K in RaaS credits for Web3 startups building on blockchain infrastructure.",
+    "locked_instructions": "1. Go to quicknode.com/startups\n2. Apply through a Web3 VC or accelerator partner.\n3. Get up to $200K in RPC node credits for Ethereum, Solana, and 20+ chains.\n4. Essential for Web3 startups needing reliable blockchain access.",
+    "applyUrl": "https://www.quicknode.com/startups"
+  },
+  {
+    "vendor": "Alchemy",
+    "name": "Alchemy for Startups",
+    "value": "$50,000",
+    "category": "Web3",
+    "eligibility": [
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Up to $50K in credits for Web3 developers building on Alchemy's platform.",
+    "locked_instructions": "1. Go to alchemy.com/startups\n2. Apply through a Web3 VC or accelerator partner.\n3. Get up to $50K in credits for blockchain APIs and developer tools.\n4. Alchemy powers 70% of the top Web3 apps.",
+    "applyUrl": "https://www.alchemy.com/startups"
+  },
+  {
+    "vendor": "LinkedIn",
+    "name": "LinkedIn Ads Credits",
+    "value": "Spend $250, get $250",
+    "category": "Marketing",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Spend $250 on LinkedIn Ads and get $250 in matching credits for new advertisers.",
+    "locked_instructions": "1. Go to linkedin.com/business/marketing\n2. Create a new LinkedIn Ads account.\n3. Spend $250 in your first 30 days and get $250 in matching credits.\n4. Target by job title, company size, and industry, best B2B ad platform.",
+    "applyUrl": "https://business.linkedin.com/marketing-solutions"
+  },
+  {
+    "vendor": "Google Ads",
+    "name": "Google Ads Credits",
+    "value": "Spend $500, get $500",
+    "category": "Advertising",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Spend $500 in your first 60 days and receive $500 in matching Google Ads credits.",
+    "locked_instructions": "1. Go to ads.google.com\n2. Create a new Google Ads account.\n3. Spend $500 in your first 60 days and get $500 in matching credits.\n4. Use Search campaigns first, highest intent traffic for B2B and SaaS.",
+    "applyUrl": "https://ads.google.com/home/offers/"
+  },
+  {
+    "vendor": "TikTok",
+    "name": "TikTok for Business",
+    "value": "Up to $6,000",
+    "category": "Advertising",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Up to $6,000 in tiered ad credits for startups via TikTok for Business partner programs.",
+    "locked_instructions": "1. Go to ads.tiktok.com\n2. Create a TikTok for Business account.\n3. Credits are tiered based on spend, up to $6,000 through partner programs.\n4. Best for B2C startups targeting under-35 audiences with video content.",
+    "applyUrl": "https://ads.tiktok.com/i18n/home/"
+  },
+  {
+    "vendor": "Reddit Ads",
+    "name": "Reddit Ads Credits",
+    "value": "Spend $500, get $500",
+    "category": "Advertising",
+    "eligibility": [
+      "Bootstrapped",
+      "Funded",
+      "Accelerator"
+    ],
+    "public_description": "Spend $500 on Reddit Ads and get $500 in matching credits. Up to $1,000 available via partner programs.",
+    "locked_instructions": "1. Go to ads.reddit.com\n2. Create a Reddit Ads account.\n3. Spend $500 and get $500 in matching credits. Partner programs can unlock up to $1,000 total.\n4. Target specific subreddits, great for reaching niche technical audiences.",
+    "applyUrl": "https://ads.reddit.com/"
   }
 ]
