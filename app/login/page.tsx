@@ -4,6 +4,11 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 
+const C = {
+  orange: "#ff4d00",
+  orangeHover: "#e04400",
+};
+
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -78,7 +83,12 @@ export default function LoginPage() {
 
           {error && <p style={{ color: "#dc2626", fontSize: "0.8rem", marginBottom: "12px" }}>{error}</p>}
 
-          <button onClick={handleEmailLogin} style={{ width: "100%", padding: "11px", background: "#dc2626", color: "#fff", border: "none", borderRadius: "7px", fontWeight: 500, cursor: "pointer", fontSize: "0.9rem" }}>
+          <button
+            onClick={handleEmailLogin}
+            style={{ width: "100%", padding: "11px", background: C.orange, color: "#fff", border: "none", borderRadius: "7px", fontWeight: 600, cursor: "pointer", fontSize: "0.9rem", transition: "background 0.15s" }}
+            onMouseEnter={e => (e.currentTarget.style.background = C.orangeHover)}
+            onMouseLeave={e => (e.currentTarget.style.background = C.orange)}
+          >
             Sign In
           </button>
         </div>
