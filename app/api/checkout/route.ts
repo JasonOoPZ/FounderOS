@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { stripe, PRICE_AMOUNT, PRODUCT_NAME } from '@/lib/stripe'
+import { getStripe, PRICE_AMOUNT, PRODUCT_NAME } from '@/lib/stripe'
 
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
@@ -22,6 +22,14 @@ export async function POST(req: NextRequest) {
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
     if (!siteUrl) {
       console.error('NEXT_PUBLIC_SITE_URL not configured')
+      return NextResponse.json({ error: 'Server configuration error' }, { status: 500 })
+    }
+
+    let stripe
+    try {
+      stripe = getStripe()
+    } catch (error) {
+      console.error('Stripe configuration error:', error)
       return NextResponse.json({ error: 'Server configuration error' }, { status: 500 })
     }
 
