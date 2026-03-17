@@ -4,12 +4,8 @@ import { useState, useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { Search, ExternalLink, Lock, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { supabase } from "@/lib/supabase";
+import { FREE_DIRECTORY_COUNT } from "@/lib/constants";
 
 const C = {
   bg:          "#ffffff",
@@ -24,8 +20,7 @@ const C = {
   radius:      "8px",
 };
 
-const FREE_COUNT = 3;
-const LOGO_TOKEN = "pk_cxNQIULxSGGw3kUd40puvg";
+const FREE_COUNT = FREE_DIRECTORY_COUNT;
 
 type Resource = { title: string; url: string; category: string };
 
@@ -38,6 +33,7 @@ function Logo({ url, name }: { url: string; name: string }) {
   const [failed, setFailed] = useState(false);
   const domain = getDomain(url);
   const letter = name.charAt(0).toUpperCase();
+  const logoUrl = domain ? `/api/logo?domain=${encodeURIComponent(domain)}&size=40` : "";
 
   if (failed || !domain) {
     return (
@@ -50,7 +46,7 @@ function Logo({ url, name }: { url: string; name: string }) {
   return (
     <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: C.surface, border: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, overflow: "hidden" }}>
       <img
-        src={`https://img.logo.dev/${domain}?token=${LOGO_TOKEN}&size=40`}
+        src={logoUrl}
         alt={name}
         width={24}
         height={24}
@@ -80,9 +76,7 @@ function ResourceCard({ resource, locked }: { resource: Resource; locked: boolea
           onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.06)"; e.currentTarget.style.borderColor = "#d0d0d0"; }}
           onMouseLeave={e => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.borderColor = C.border; }}>
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-            {/* Logo */}
             <Logo url={resource.url} name={resource.title} />
-            {/* Content */}
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontSize: "13px", fontWeight: 700, color: C.ink, lineHeight: 1.3, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", marginBottom: "3px" }}>
                 {resource.title}
@@ -104,12 +98,10 @@ export default function DirectoryClient({ resources, categories }: { resources: 
   const [activeCategory, setActiveCategory] = useState("All");
   const [showSuggest, setShowSuggest] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setIsLoggedIn(!!session);
-      setAuthLoading(false);
     });
   }, []);
 
@@ -139,26 +131,27 @@ export default function DirectoryClient({ resources, categories }: { resources: 
   const sortedCategories = ["All", ...categories.filter(c => c !== "All")];
 
   return (
-    <div style={{ background: C.bg, minHeight: "100vh", fontFamily: "'Inter', sans-serif", WebkitFontSmoothing: "antialiased" as any }}>
+    <div style={{ background: C.bg, minHeight: "100vh", fontFamily: "'Inter', sans-serif", WebkitFontSmoothing: "antialiased" }}>
 
       {/* NAV */}
       <nav style={{ position: "sticky", top: 0, zIndex: 50, background: C.bg, borderBottom: `1px solid ${C.border}`, height: "58px", display: "flex", alignItems: "center", padding: "0 48px", justifyContent: "space-between" }}>
         <Link href="/" style={{ textDecoration: "none" }}>
-          <span style={{ color: C.ink, fontWeight: 800, fontSize: "15px", letterSpacing: "0.08em", textTransform: "uppercase" }}>FOUNDER OS</span>
+          <span style={{ color: C.ink, fontWeight: 800, fontSize: "15px", letterSpacing: "0.08em", textTransform: "uppercase" }}>LAUNCH PERKS</span>
         </Link>
         <div style={{ display: "flex", alignItems: "center", gap: "32px" }}>
           <span style={{ color: C.ink, fontSize: "14px", fontWeight: 600 }}>Directory</span>
           <Link href="/providers" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Providers</Link>
+          <Link href="/providers?category=Company%20Setup" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Company Setup</Link>
           {isLoggedIn ? (
             <Link href="/dashboard" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Dashboard</Link>
           ) : (
             <Link href="/login" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Sign In</Link>
           )}
-          <Link href="/Must-Haves" style={{ textDecoration: "none" }}>
+          <Link href="/credits" style={{ textDecoration: "none" }}>
             <button style={{ background: C.orange, color: "white", border: "none", borderRadius: C.radius, padding: "9px 20px", fontWeight: 600, cursor: "pointer", fontSize: "14px", fontFamily: "inherit", transition: "background 0.15s" }}
               onMouseEnter={e => (e.currentTarget.style.background = C.orangeHover)}
               onMouseLeave={e => (e.currentTarget.style.background = C.orange)}>
-              Unlock Must-Haves
+              Unlock Must Haves
             </button>
           </Link>
         </div>
@@ -170,7 +163,7 @@ export default function DirectoryClient({ resources, categories }: { resources: 
           <div style={{ width: "40px", height: "4px", background: C.orange, borderRadius: "2px", marginBottom: "24px" }} />
           <p style={{ fontSize: "11px", color: C.light, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "10px", fontWeight: 600 }}>Free Tier</p>
           <h1 style={{ fontSize: "clamp(36px, 5vw, 60px)", fontWeight: 900, letterSpacing: "-2px", lineHeight: 1.02, color: C.ink, marginBottom: "12px" }}>
-            The founder toolkit.
+            The startup toolkit.
           </h1>
           <p style={{ fontSize: "16px", color: C.mid, maxWidth: "480px", marginBottom: "32px", lineHeight: 1.6 }}>
             {resources.length} curated resources across {categories.length} categories.{" "}
@@ -304,7 +297,13 @@ export default function DirectoryClient({ resources, categories }: { resources: 
 
       {/* FOOTER */}
       <div style={{ borderTop: `1px solid ${C.border}`, padding: "32px 48px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "16px" }}>
-        <span style={{ color: C.ink, fontWeight: 800, fontSize: "14px", letterSpacing: "0.08em", textTransform: "uppercase" }}>FOUNDER OS</span>
+        <span style={{ color: C.ink, fontWeight: 800, fontSize: "14px", letterSpacing: "0.08em", textTransform: "uppercase" }}>LAUNCH PERKS</span>
+        <div style={{ display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap" }}>
+          <Link href="/about" style={{ fontSize: "13px", color: C.mid, textDecoration: "none" }}>About Us</Link>
+          <Link href="/terms" style={{ fontSize: "13px", color: C.mid, textDecoration: "none" }}>Terms</Link>
+          <Link href="/privacy" style={{ fontSize: "13px", color: C.mid, textDecoration: "none" }}>Privacy</Link>
+          <Link href="/contact" style={{ fontSize: "13px", color: C.mid, textDecoration: "none" }}>Contact</Link>
+        </div>
         <button onClick={() => setShowSuggest(true)}
           style={{ background: "transparent", border: `1.5px solid ${C.border}`, color: C.mid, borderRadius: C.radius, padding: "8px 16px", cursor: "pointer", fontSize: "13px", fontWeight: 500, fontFamily: "inherit", transition: "all 0.12s" }}
           onMouseEnter={e => { e.currentTarget.style.borderColor = C.ink; e.currentTarget.style.color = C.ink; }}
@@ -322,7 +321,7 @@ export default function DirectoryClient({ resources, categories }: { resources: 
             onClick={e => e.stopPropagation()}>
             <div style={{ width: "32px", height: "3px", background: C.orange, borderRadius: "2px", marginBottom: "20px" }} />
             <h3 style={{ fontWeight: 800, fontSize: "20px", marginBottom: "6px", color: C.ink }}>Suggest a Tool</h3>
-            <p style={{ fontSize: "13px", color: C.mid, marginBottom: "24px", lineHeight: 1.5 }}>Know a great resource for founders? Share it below.</p>
+            <p style={{ fontSize: "13px", color: C.mid, marginBottom: "24px", lineHeight: 1.5 }}>Know a great resource for startups? Share it below.</p>
             <input placeholder="Tool name" style={{ width: "100%", padding: "11px 14px", border: `1.5px solid ${C.border}`, borderRadius: C.radius, fontSize: "14px", marginBottom: "10px", boxSizing: "border-box", outline: "none", fontFamily: "inherit", color: C.ink }}
               onFocus={e => (e.currentTarget.style.borderColor = C.orange)}
               onBlur={e => (e.currentTarget.style.borderColor = C.border)} />

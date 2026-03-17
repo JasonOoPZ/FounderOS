@@ -4,12 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { Lock, CheckCircle, ArrowRight, Zap, ExternalLink, Star } from "lucide-react";
 import Link from "next/link";
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { supabase } from "@/lib/supabase";
 
 const C = {
   bg:          "#ffffff",
@@ -25,17 +20,17 @@ const C = {
   radius:      "8px",
 };
 
-const LOGO_TOKEN = "pk_cxNQIULxSGGw3kUd40puvg";
-
 function Logo({ domain, name }: { domain: string; name: string }) {
   const [failed, setFailed] = useState(false);
+  const logoUrl = `/api/logo?domain=${encodeURIComponent(domain)}&size=40`;
+
   return (
     <div style={{ width: "36px", height: "36px", minWidth: "36px", borderRadius: "8px", background: C.surface, border: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
       {failed ? (
         <span style={{ color: C.mid, fontSize: "13px", fontWeight: 800 }}>{name[0]}</span>
       ) : (
         <img
-          src={`https://img.logo.dev/${domain}?token=${LOGO_TOKEN}&size=40`}
+          src={logoUrl}
           alt={name}
           width={22}
           height={22}
@@ -70,6 +65,7 @@ function FadeIn({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
 }
 
 const STAGES = ["Bootstrapped", "Funded", "Accelerator"];
+const TOP_VENDOR_PRIORITY = ["Preferences AI"];
 
 const VENDOR_DOMAINS: Record<string, string> = {
   "AWS": "aws.amazon.com",
@@ -166,6 +162,8 @@ export default function CreditsClient({ credits }: { credits: Credit[] }) {
   const [isPro, setIsPro] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [selectedCredit, setSelectedCredit] = useState<Credit | null>(null);
+  const [visitShift, setVisitShift] = useState(0);
 
   useEffect(() => {
     async function checkAuth() {
@@ -183,15 +181,34 @@ export default function CreditsClient({ credits }: { credits: Credit[] }) {
     checkAuth();
   }, []);
 
-  // Sort: mustHave first, then rest
+  useEffect(() => {
+    const visitKey = "credits_must_haves_visit";
+    const previousVisits = Number(window.sessionStorage.getItem(visitKey) ?? "0");
+    window.sessionStorage.setItem(visitKey, String(previousVisits + 1));
+    setVisitShift(previousVisits);
+  }, []);
+
+  // Sort: priority vendors first, then mustHave
   const sorted = [...credits].sort((a, b) => {
+    const ai = TOP_VENDOR_PRIORITY.indexOf(a.vendor);
+    const bi = TOP_VENDOR_PRIORITY.indexOf(b.vendor);
+    if (ai !== -1 || bi !== -1) {
+      if (ai === -1) return 1;
+      if (bi === -1) return -1;
+      return ai - bi;
+    }
     if (a.mustHave && !b.mustHave) return -1;
     if (!a.mustHave && b.mustHave) return 1;
     return 0;
   });
 
+  const pinned = sorted.filter((c) => TOP_VENDOR_PRIORITY.includes(c.vendor));
+  const remaining = sorted.filter((c) => !TOP_VENDOR_PRIORITY.includes(c.vendor));
+  const offset = remaining.length > 0 ? visitShift % remaining.length : 0;
+  const visitOrdered = [...pinned, ...remaining.slice(offset), ...remaining.slice(0, offset)];
+
   // Apply filters
-  const eligible = sorted.filter((c) => {
+  const eligible = visitOrdered.filter((c) => {
     const stageMatch = selectedStage ? c.eligibility.includes(selectedStage) : true;
     const mustHaveMatch = showMustHaveOnly ? c.mustHave === true : true;
     return stageMatch && mustHaveMatch;
@@ -202,28 +219,34 @@ export default function CreditsClient({ credits }: { credits: Credit[] }) {
     return sum + (isNaN(num) ? 0 : num);
   }, 0);
 
+  function creditNarrative(credit: Credit): string {
+    const eligibilityText = credit.eligibility.length > 0 ? `best suited for ${credit.eligibility.join(", ")} founders` : "open to eligible founders";
+    return `${credit.vendor} offers ${credit.value} in startup benefits and is ${eligibilityText}. Prioritize this if it reduces immediate burn in your current stage.`;
+  }
+
   const formatTotal = (n: number) =>
     n >= 1000000 ? `$${(n / 1000000).toFixed(1)}M+` : `$${(n / 1000).toFixed(0)}K+`;
 
   const mustHaveCount = credits.filter(c => c.mustHave).length;
 
   return (
-    <div style={{ background: C.surface, minHeight: "100vh", fontFamily: "'Inter', sans-serif", WebkitFontSmoothing: "antialiased" as any }}>
+    <div style={{ background: C.surface, minHeight: "100vh", fontFamily: "'Inter', sans-serif", WebkitFontSmoothing: "antialiased" }}>
 
       {/* NAV */}
       <nav style={{ position: "sticky", top: 0, zIndex: 50, background: C.bg, borderBottom: `1px solid ${C.border}`, height: "58px", display: "flex", alignItems: "center", padding: "0 48px", justifyContent: "space-between" }}>
         <Link href="/" style={{ textDecoration: "none" }}>
-          <span style={{ color: C.ink, fontWeight: 800, fontSize: "15px", letterSpacing: "0.08em", textTransform: "uppercase" }}>FOUNDER OS</span>
+          <span style={{ color: C.ink, fontWeight: 800, fontSize: "15px", letterSpacing: "0.08em", textTransform: "uppercase" }}>Launch Perks</span>
         </Link>
         <div style={{ display: "flex", alignItems: "center", gap: "32px" }}>
           <Link href="/directory" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Directory</Link>
           <Link href="/providers" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Providers</Link>
+          <Link href="/providers?category=Company%20Setup" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Company Setup</Link>
           {isLoggedIn ? (
             <Link href="/dashboard" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Dashboard</Link>
           ) : (
             <Link href="/login" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Sign In</Link>
           )}
-          <span style={{ color: C.ink, fontSize: "14px", fontWeight: 600 }}>Must-Haves</span>
+          <span style={{ color: C.ink, fontSize: "14px", fontWeight: 600 }}>Must Haves</span>
         </div>
       </nav>
 
@@ -233,10 +256,10 @@ export default function CreditsClient({ credits }: { credits: Credit[] }) {
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <div style={{ width: "40px", height: "4px", background: C.orange, borderRadius: "2px", marginBottom: "28px" }} />
             <p style={{ fontSize: "11px", color: C.light, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "12px", fontWeight: 600 }}>
-              {isPro ? "Pro Access · Unlocked" : "Premium · One-time $149"}
+              {isPro ? "Pro Access · Unlocked" : "Premium · One time $149"}
             </p>
             <h1 style={{ fontSize: "clamp(36px, 5vw, 64px)", fontWeight: 900, letterSpacing: "-2px", color: C.ink, marginBottom: "12px", lineHeight: 1.02 }}>
-              Must-Haves<br />Startup Credits
+              Must Haves<br />Startup Credits
             </h1>
             <p style={{ color: C.mid, fontSize: "16px", marginBottom: "36px", lineHeight: 1.6, maxWidth: "520px" }}>
               {isPro
@@ -286,7 +309,7 @@ export default function CreditsClient({ credits }: { credits: Credit[] }) {
                 style={{ display: "inline-flex", alignItems: "center", gap: "10px", background: C.orangeLight, border: `1px solid rgba(255,77,0,0.2)`, borderRadius: "10px", padding: "12px 20px" }}>
                 <CheckCircle style={{ width: "15px", height: "15px", color: C.orange }} />
                 <span style={{ fontSize: "14px", color: C.ink, fontWeight: 500 }}>
-                  {showMustHaveOnly && !selectedStage && <>Showing <strong style={{ color: C.orange }}>Top {mustHaveCount}</strong> must-have credits — <strong style={{ color: C.orange }}>$1.5M</strong> in value</>}
+                  {showMustHaveOnly && !selectedStage && <>Showing <strong style={{ color: C.orange }}>Top {mustHaveCount}</strong> must have credits <strong style={{ color: C.orange }}>$1.5M</strong> in value</>}
                   {!showMustHaveOnly && selectedStage && <>As a <strong>{selectedStage}</strong> startup, you qualify for <strong style={{ color: C.orange }}>{formatTotal(totalValue)}</strong> in credits</>}
                   {showMustHaveOnly && selectedStage && <>Top {mustHaveCount} credits available to <strong>{selectedStage}</strong> startups — <strong style={{ color: C.orange }}>{eligible.length} match</strong></>}
                 </span>
@@ -305,6 +328,7 @@ export default function CreditsClient({ credits }: { credits: Credit[] }) {
             return (
               <FadeIn key={credit.vendor + i} delay={Math.min(i * 0.04, 0.3)}>
                 <div
+                  onClick={() => setSelectedCredit(credit)}
                   style={{
                     background: C.bg,
                     border: `1.5px solid ${isMustHave ? "rgba(255,77,0,0.25)" : C.border}`,
@@ -315,6 +339,7 @@ export default function CreditsClient({ credits }: { credits: Credit[] }) {
                     flexDirection: "column",
                     height: "100%",
                     position: "relative",
+                    cursor: "pointer",
                   }}
                   onMouseEnter={e => (e.currentTarget.style.boxShadow = isMustHave ? "0 4px 20px rgba(255,77,0,0.10)" : "0 4px 20px rgba(0,0,0,0.06)")}
                   onMouseLeave={e => (e.currentTarget.style.boxShadow = "none")}
@@ -330,7 +355,7 @@ export default function CreditsClient({ credits }: { credits: Credit[] }) {
                       display: "flex", alignItems: "center", gap: "4px"
                     }}>
                       <Star style={{ width: "10px", height: "10px", fill: C.orange, color: C.orange }} />
-                      <span style={{ fontSize: "10px", fontWeight: 700, color: C.orange, letterSpacing: "0.05em", textTransform: "uppercase" }}>Must-Have</span>
+                      <span style={{ fontSize: "10px", fontWeight: 700, color: C.orange, letterSpacing: "0.05em", textTransform: "uppercase" }}>Must Have</span>
                     </div>
                   )}
 
@@ -372,7 +397,7 @@ export default function CreditsClient({ credits }: { credits: Credit[] }) {
                   <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", flex: 1 }}>
 
                     {/* Description — fixed height, capped at 4 lines */}
-                    <p style={{ fontSize: "13px", color: C.mid, lineHeight: 1.7, margin: "0 0 16px 0", height: "88px", overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 4, WebkitBoxOrient: "vertical" as any }}>
+                    <p style={{ fontSize: "13px", color: C.mid, lineHeight: 1.7, margin: "0 0 16px 0", height: "88px", overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 4, WebkitBoxOrient: "vertical" }}>
                       {credit.public_description}
                     </p>
 
@@ -395,7 +420,7 @@ export default function CreditsClient({ credits }: { credits: Credit[] }) {
 
                     {/* Apply button — pro only */}
                     {isPro && credit.applyUrl && (
-                      <a href={credit.applyUrl} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+                      <a href={credit.applyUrl} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }} onClick={(e) => e.stopPropagation()}>
                         <button
                           style={{ width: "100%", background: C.orange, color: "white", border: "none", borderRadius: C.radius, padding: "10px 16px", fontWeight: 600, cursor: "pointer", fontSize: "13px", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", fontFamily: "inherit", transition: "background 0.15s" }}
                           onMouseEnter={e => (e.currentTarget.style.background = C.orangeHover)}
@@ -417,15 +442,15 @@ export default function CreditsClient({ credits }: { credits: Credit[] }) {
           <FadeIn delay={0.2}>
             <div style={{ marginTop: "64px", border: `1.5px solid ${C.border}`, borderRadius: "16px", padding: "56px 64px", background: C.bg, textAlign: "center" }}>
               <div style={{ width: "32px", height: "3px", background: C.orange, borderRadius: "2px", margin: "0 auto 24px" }} />
-              <p style={{ fontSize: "11px", color: C.light, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "16px", fontWeight: 600 }}>One-time $149</p>
+              <p style={{ fontSize: "11px", color: C.light, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "16px", fontWeight: 600 }}>One time $149</p>
               <h2 style={{ fontSize: "clamp(24px, 3.5vw, 40px)", fontWeight: 900, letterSpacing: "-1.5px", color: C.ink, marginBottom: "14px" }}>
                 Unlock all redemption instructions.
               </h2>
               <p style={{ color: C.mid, fontSize: "15px", lineHeight: 1.7, maxWidth: "420px", margin: "0 auto 36px" }}>
-                Get exact apply links and step-by-step guides for every credit. Pay once, access forever.
+                Get exact apply links and step by step guides for every credit. Pay once, access forever.
               </p>
               <div style={{ display: "flex", flexWrap: "wrap", gap: "16px", justifyContent: "center", marginBottom: "36px" }}>
-                {["Direct apply links", "Step-by-step instructions", "Lifetime updates", "Eligibility checker"].map((perk) => (
+                {["Direct apply links", "Step by step instructions", "Lifetime updates", "Eligibility checker"].map((perk) => (
                   <div key={perk} style={{ display: "flex", alignItems: "center", gap: "7px", fontSize: "13px", color: C.mid }}>
                     <CheckCircle style={{ width: "14px", height: "14px", color: C.orange }} /> {perk}
                   </div>
@@ -442,15 +467,95 @@ export default function CreditsClient({ credits }: { credits: Credit[] }) {
                   <ArrowRight style={{ width: "16px", height: "16px" }} />
                 </button>
               </Link>
-              <p style={{ fontSize: "12px", color: C.light, marginTop: "14px" }}>One-time payment · No subscription · Instant access</p>
+              <p style={{ fontSize: "12px", color: C.light, marginTop: "14px" }}>One time payment · No subscription · Instant access</p>
             </div>
           </FadeIn>
         )}
 
+        {selectedCredit && (
+          <div
+            onClick={() => setSelectedCredit(null)}
+            style={{ position: "fixed", inset: 0, background: "rgba(10,10,10,0.45)", zIndex: 130, display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              style={{ width: "min(820px, 100%)", maxHeight: "88vh", overflowY: "auto", background: C.bg, border: `1px solid ${C.border}`, borderRadius: "16px", padding: "24px", boxShadow: "0 18px 40px rgba(0,0,0,0.16)" }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "14px", marginBottom: "16px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                  <Logo
+                    domain={VENDOR_DOMAINS[selectedCredit.vendor] ?? selectedCredit.vendor.toLowerCase().replace(/\s+/g, "").replace(/[^a-z0-9]/g, "") + ".com"}
+                    name={selectedCredit.vendor}
+                  />
+                  <div>
+                    <h3 style={{ margin: 0, fontSize: "25px", fontWeight: 900, color: C.ink, letterSpacing: "-0.6px" }}>{selectedCredit.vendor}</h3>
+                    <p style={{ margin: "4px 0 0", fontSize: "13px", color: C.mid }}>{selectedCredit.name}</p>
+                  </div>
+                </div>
+                <button onClick={() => setSelectedCredit(null)} style={{ border: `1px solid ${C.border}`, background: C.bg, borderRadius: "8px", padding: "7px 10px", cursor: "pointer", color: C.mid }}>
+                  Close
+                </button>
+              </div>
+
+              <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", marginBottom: "14px" }}>
+                <span style={{ fontSize: "14px", fontWeight: 800, color: C.orange, background: C.orangeLight, border: `1px solid rgba(255,77,0,0.25)`, borderRadius: "999px", padding: "6px 12px" }}>
+                  {selectedCredit.value}
+                </span>
+                <span style={{ fontSize: "11px", color: C.mid, letterSpacing: "0.08em", textTransform: "uppercase", fontWeight: 600, border: `1px solid ${C.border}`, borderRadius: "999px", padding: "5px 10px" }}>
+                  {selectedCredit.category}
+                </span>
+                {selectedCredit.eligibility.map((e) => (
+                  <span key={e} style={{ fontSize: "11px", color: C.mid, border: `1px solid ${C.border}`, borderRadius: "999px", padding: "5px 10px" }}>{e}</span>
+                ))}
+              </div>
+
+              <p style={{ color: C.ink, fontSize: "15px", lineHeight: 1.7, marginBottom: "8px" }}>{selectedCredit.public_description}</p>
+              <p style={{ color: C.mid, fontSize: "14px", lineHeight: 1.7, marginBottom: "18px" }}>{creditNarrative(selectedCredit)}</p>
+
+              <div style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: "10px", padding: "16px 18px", marginBottom: "18px", filter: isPro ? "none" : "blur(2px)", position: "relative" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "10px" }}>
+                  <CheckCircle style={{ width: "13px", height: "13px", color: "#16a34a" }} />
+                  <span style={{ fontSize: "12px", fontWeight: 700, color: C.ink }}>Step by step instructions</span>
+                </div>
+                {selectedCredit.locked_instructions.split("\n").map((line, idx) => (
+                  <p key={idx} style={{ margin: idx < selectedCredit.locked_instructions.split("\n").length - 1 ? "0 0 8px" : 0, fontSize: "13px", color: "#166534", lineHeight: 1.6 }}>
+                    {line}
+                  </p>
+                ))}
+              </div>
+
+              <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                {isPro && selectedCredit.applyUrl ? (
+                  <a href={selectedCredit.applyUrl} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+                    <button style={{ background: C.orange, color: "white", border: "none", borderRadius: C.radius, padding: "11px 18px", fontWeight: 700, cursor: "pointer", fontSize: "14px", display: "inline-flex", alignItems: "center", gap: "7px" }}>
+                      Apply Now <ExternalLink style={{ width: "13px", height: "13px" }} />
+                    </button>
+                  </a>
+                ) : (
+                  <Link href={isLoggedIn ? "/dashboard" : "/login"} style={{ textDecoration: "none" }}>
+                    <button style={{ background: C.orange, color: "white", border: "none", borderRadius: C.radius, padding: "11px 18px", fontWeight: 700, cursor: "pointer", fontSize: "14px", display: "inline-flex", alignItems: "center", gap: "7px" }}>
+                      {isLoggedIn ? "Unlock Full Instructions" : "Sign In to Unlock"}
+                    </button>
+                  </Link>
+                )}
+                <button onClick={() => setSelectedCredit(null)} style={{ background: C.bg, color: C.mid, border: `1px solid ${C.border}`, borderRadius: C.radius, padding: "11px 18px", fontWeight: 600, cursor: "pointer", fontSize: "14px" }}>
+                  Back to Must Haves
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Footer */}
         <div style={{ borderTop: `1px solid ${C.border}`, marginTop: "64px", paddingTop: "32px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "16px" }}>
-          <span style={{ color: C.ink, fontWeight: 800, fontSize: "14px", letterSpacing: "0.08em", textTransform: "uppercase" }}>FOUNDER OS</span>
-          <p style={{ fontSize: "13px", color: C.light }}>Built for founders, by founders.</p>
+          <span style={{ color: C.ink, fontWeight: 800, fontSize: "14px", letterSpacing: "0.08em", textTransform: "uppercase" }}>Launch Perks</span>
+          <div style={{ display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap" }}>
+            <Link href="/about" style={{ fontSize: "13px", color: C.mid, textDecoration: "none" }}>About Us</Link>
+            <Link href="/terms" style={{ fontSize: "13px", color: C.mid, textDecoration: "none" }}>Terms</Link>
+            <Link href="/privacy" style={{ fontSize: "13px", color: C.mid, textDecoration: "none" }}>Privacy</Link>
+            <Link href="/contact" style={{ fontSize: "13px", color: C.mid, textDecoration: "none" }}>Contact</Link>
+            <p style={{ fontSize: "13px", color: C.light }}>Built for founders, by founders.</p>
+          </div>
         </div>
       </div>
     </div>

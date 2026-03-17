@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { Suspense, useState, useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
-import { Search, Lock, ArrowRight, Zap } from "lucide-react";
+import { Search, Lock, ArrowRight, Zap, ExternalLink } from "lucide-react";
 import Link from "next/link";
+import { useSearchParams, useRouter } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
@@ -24,8 +25,6 @@ const C = {
   radius:      "8px",
 };
 
-const LOGO_TOKEN = "pk_cxNQIULxSGGw3kUd40puvg";
-
 type Provider = {
   name: string;
   domain: string;
@@ -33,17 +32,28 @@ type Provider = {
   category: string;
   tags?: string[];
   description?: string;
+  applyUrl?: string;
   locked?: boolean;
 };
 
+const COMPANY_SETUP_HIGHLIGHTS = [
+  "Hong Kong company incorporation, often completed in 1 to 2 business days.",
+  "BVI company formation with registered agent support and tax neutral structuring.",
+  "Hong Kong corporate bank account opening assistance with document preparation and follow up.",
+  "Corporate secretarial support including annual returns, statutory registers, and compliance reminders.",
+  "Document checklist support, including KYC for beneficial owners and entity setup paperwork.",
+];
+
 function Logo({ domain, name }: { domain: string; name: string }) {
   const [failed, setFailed] = useState(false);
+  const logoUrl = `/api/logo?domain=${encodeURIComponent(domain)}&size=40`;
+  
   return (
     <div style={{ width: "36px", height: "36px", borderRadius: "8px", background: C.surface, border: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, overflow: "hidden" }}>
       {failed ? (
         <span style={{ fontSize: "13px", fontWeight: 800, color: C.mid }}>{name[0]}</span>
       ) : (
-        <img src={`https://img.logo.dev/${domain}?token=${LOGO_TOKEN}&size=40`} alt={name} width={28} height={28} style={{ objectFit: "contain" }} onError={() => setFailed(true)} />
+        <img src={logoUrl} alt={name} width={28} height={28} style={{ objectFit: "contain" }} onError={() => setFailed(true)} />
       )}
     </div>
   );
@@ -59,9 +69,20 @@ function FadeIn({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   );
 }
 
-function ProviderCard({ provider, locked }: { provider: Provider; locked: boolean }) {
+function getShortDescription(text?: string, limit = 120) {
+  if (!text) return "";
+  if (text.length <= limit) return text;
+  const trimmed = text.slice(0, limit);
+  const lastSpace = trimmed.lastIndexOf(" ");
+  return `${(lastSpace > 0 ? trimmed.slice(0, lastSpace) : trimmed).trim()}...`;
+}
+
+function ProviderCard({ provider, locked, onOpen }: { provider: Provider; locked: boolean; onOpen?: () => void }) {
   return (
-    <div style={{ background: C.bg, border: `1px solid ${C.border}`, borderRadius: "12px", padding: "20px 22px", height: "100%", position: "relative", filter: locked ? "blur(3px)" : "none", userSelect: locked ? "none" : "auto", pointerEvents: locked ? "none" : "auto", transition: "all 0.15s" }}>
+    <div
+      onClick={!locked ? onOpen : undefined}
+      style={{ background: C.bg, border: `1px solid ${C.border}`, borderRadius: "12px", padding: "20px 22px", height: "100%", position: "relative", filter: locked ? "blur(3px)" : "none", userSelect: locked ? "none" : "auto", pointerEvents: locked ? "none" : "auto", transition: "all 0.15s", cursor: locked ? "default" : "pointer" }}
+    >
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "12px", marginBottom: "12px" }}>
         <Logo domain={provider.domain} name={provider.name} />
         <div style={{ display: "inline-block", padding: "2px 8px", background: C.tagBg, borderRadius: "4px", fontSize: "10px", fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", color: C.mid }}>
@@ -70,11 +91,12 @@ function ProviderCard({ provider, locked }: { provider: Provider; locked: boolea
       </div>
       <div style={{ fontSize: "15px", fontWeight: 800, color: C.ink, marginBottom: "4px" }}>{provider.name}</div>
       {provider.value && <div style={{ fontSize: "13px", fontWeight: 700, color: C.orange, marginBottom: "8px" }}>{provider.value}</div>}
-      {provider.description && <p style={{ fontSize: "12px", color: C.mid, lineHeight: 1.6, marginBottom: "14px" }}>{provider.description}</p>}
+      {provider.description && <p style={{ fontSize: "12px", color: C.mid, lineHeight: 1.6, marginBottom: "10px" }}>{getShortDescription(provider.description)}</p>}
+      {!locked && <p style={{ fontSize: "11px", color: C.light, marginBottom: "12px" }}>Click to expand</p>}
       {provider.tags && (
         <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
           {provider.tags.slice(0, 3).map(tag => (
-            <span key={tag} style={{ fontSize: "10px", padding: "2px 7px", borderRadius: "4px", background: C.surface, border: `1px solid ${C.border}`, color: C.light, fontWeight: 500 }}>{tag}</span>
+            <span key={tag} style={{ fontSize: "10px", padding: "2px 7px", borderRadius: "4px", background: C.surface, border: `1px solid ${C.border}`, color: C.light, fontWeight: 500 }}>{tag.replace(/-/g, " ")}</span>
           ))}
         </div>
       )}
@@ -82,7 +104,9 @@ function ProviderCard({ provider, locked }: { provider: Provider; locked: boolea
   );
 }
 
-export default function ProvidersPage() {
+function ProvidersPageContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
   const [freeProviders, setFreeProviders] = useState<Provider[]>([]);
@@ -91,6 +115,7 @@ export default function ProvidersPage() {
   const [loading, setLoading] = useState(true);
   const [isPro, setIsPro] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [selectedProvider, setSelectedProvider] = useState<Provider | null>(null);
 
   useEffect(() => {
     async function fetchProviders() {
@@ -101,6 +126,11 @@ export default function ProvidersPage() {
           headers["Authorization"] = `Bearer ${session.access_token}`;
         }
         const res = await fetch("/api/providers", { headers });
+        
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}: Failed to fetch providers`);
+        }
+        
         const data = await res.json();
         setFreeProviders(data.free || []);
         setLockedProviders(data.locked || []);
@@ -116,6 +146,11 @@ export default function ProvidersPage() {
     fetchProviders();
   }, []);
 
+  useEffect(() => {
+    const categoryParam = searchParams.get("category");
+    setActiveCategory(categoryParam || "All");
+  }, [searchParams]);
+
   const allCategories = ["All", ...Array.from(new Set(freeProviders.map(p => p.category))).sort()];
 
   const filteredFree = freeProviders.filter(p => {
@@ -126,26 +161,39 @@ export default function ProvidersPage() {
     return matchSearch && matchCat;
   });
 
+  const featuredCompanySetup = freeProviders.find((p) => p.name === "Sane Choice");
+  const shouldShowCompanySetupFeature =
+    !!featuredCompanySetup &&
+    (activeCategory === "All" || activeCategory === "Company Setup") &&
+    (search.trim().length === 0 || "sane choice company setup bvi banking hong kong".includes(search.toLowerCase()));
+
   const remainingCount = total - freeProviders.length;
 
+  function providerNarrative(provider: Provider): string {
+    const valueText = provider.value ? `with ${provider.value} in startup benefits` : "with meaningful startup perks";
+    const tagText = provider.tags && provider.tags.length > 0 ? ` focused on ${provider.tags.slice(0, 3).join(", ")}` : "";
+    return `${provider.name} is a ${provider.category.toLowerCase()} partner ${valueText}${tagText}. This can help founders reduce burn, ship faster, and unlock compounding advantages early.`;
+  }
+
   return (
-    <div style={{ background: C.bg, minHeight: "100vh", fontFamily: "'Inter', sans-serif", WebkitFontSmoothing: "antialiased" as any }}>
+    <div style={{ background: C.bg, minHeight: "100vh", fontFamily: "'Inter', sans-serif", WebkitFontSmoothing: "antialiased" }}>
 
       {/* NAV */}
       <nav style={{ position: "sticky", top: 0, zIndex: 50, background: C.bg, borderBottom: `1px solid ${C.border}`, height: "58px", display: "flex", alignItems: "center", padding: "0 48px", justifyContent: "space-between" }}>
         <Link href="/" style={{ textDecoration: "none" }}>
-          <span style={{ color: C.ink, fontWeight: 800, fontSize: "15px", letterSpacing: "0.08em", textTransform: "uppercase" }}>FOUNDER OS</span>
+          <span style={{ color: C.ink, fontWeight: 800, fontSize: "15px", letterSpacing: "0.08em", textTransform: "uppercase" }}>Launch Perks</span>
         </Link>
         <div style={{ display: "flex", alignItems: "center", gap: "32px" }}>
           <Link href="/directory" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Directory</Link>
-          <span style={{ color: C.ink, fontSize: "14px", fontWeight: 600 }}>Providers</span>
+          <span onClick={() => router.push("/providers")} style={{ color: C.ink, fontSize: "14px", fontWeight: 600, cursor: "pointer" }}>Providers</span>
+          <Link href="/providers?category=Company%20Setup" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Company Setup</Link>
           {isLoggedIn ? (
             <Link href="/dashboard" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Dashboard</Link>
           ) : (
             <Link href="/login" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Sign In</Link>
           )}
           <Link href="/credits" style={{ textDecoration: "none" }}>
-            <button style={{ background: C.orange, color: "white", border: "none", borderRadius: C.radius, padding: "9px 20px", fontWeight: 600, cursor: "pointer", fontSize: "14px", fontFamily: "inherit", transition: "background 0.15s" }}
+            <button onClick={(e) => { e.preventDefault(); router.push("/credits"); }} style={{ background: C.orange, color: "white", border: "none", borderRadius: C.radius, padding: "9px 20px", fontWeight: 600, cursor: "pointer", fontSize: "14px", fontFamily: "inherit", transition: "background 0.15s" }}
               onMouseEnter={e => (e.currentTarget.style.background = C.orangeHover)}
               onMouseLeave={e => (e.currentTarget.style.background = C.orange)}>
               Unlock Credits
@@ -200,6 +248,43 @@ export default function ProvidersPage() {
         </div>
       </div>
 
+      {shouldShowCompanySetupFeature && featuredCompanySetup && (
+        <div style={{ background: C.surface, padding: "28px 48px 0" }}>
+          <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+            <div style={{ background: "linear-gradient(135deg, #fff7f3 0%, #ffffff 60%)", border: `1px solid ${C.border}`, borderRadius: "14px", padding: "24px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px" }}>
+              <div>
+                <p style={{ fontSize: "11px", color: C.light, letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 600, marginBottom: "8px" }}>Featured Company Setup</p>
+                <h2 style={{ margin: 0, fontSize: "30px", color: C.ink, letterSpacing: "-0.8px", fontWeight: 900 }}>BVI incorporation plus Hong Kong banking setup</h2>
+                <p style={{ fontSize: "14px", color: C.mid, lineHeight: 1.7, marginTop: "10px", marginBottom: "14px" }}>
+                  {featuredCompanySetup.description}
+                </p>
+                <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                  <button onClick={() => setSelectedProvider(featuredCompanySetup)} style={{ background: C.ink, color: "#fff", border: "none", borderRadius: C.radius, padding: "10px 16px", fontWeight: 700, cursor: "pointer", fontSize: "13px", fontFamily: "inherit" }}>
+                    View Setup Details
+                  </button>
+                  {featuredCompanySetup.applyUrl && (
+                    <button onClick={() => window.open(featuredCompanySetup.applyUrl, '_blank')} style={{ background: C.orange, color: "#fff", border: "none", borderRadius: C.radius, padding: "10px 16px", fontWeight: 700, cursor: "pointer", fontSize: "13px", display: "inline-flex", alignItems: "center", gap: "6px", fontFamily: "inherit" }}>
+                      Book Consultation <ExternalLink style={{ width: "12px", height: "12px" }} />
+                    </button>
+                  )}
+                </div>
+              </div>
+              <div style={{ background: C.bg, border: `1px solid ${C.border}`, borderRadius: "10px", padding: "14px" }}>
+                <p style={{ margin: 0, fontSize: "12px", color: C.ink, fontWeight: 700, marginBottom: "10px" }}>What founders get:</p>
+                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                  {COMPANY_SETUP_HIGHLIGHTS.slice(0, 4).map((item) => (
+                    <div key={item} style={{ display: "flex", gap: "8px", alignItems: "flex-start" }}>
+                      <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: C.orange, marginTop: "6px", flexShrink: 0 }} />
+                      <span style={{ fontSize: "12px", color: C.mid, lineHeight: 1.55 }}>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* GRID */}
       <div style={{ background: C.surface, padding: "32px 48px 0" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
@@ -210,7 +295,7 @@ export default function ProvidersPage() {
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "12px", marginBottom: "12px" }}>
                 {filteredFree.map((provider, i) => (
                   <FadeIn key={provider.name + i} delay={Math.min(i * 0.02, 0.2)}>
-                    <ProviderCard provider={provider} locked={false} />
+                    <ProviderCard provider={provider} locked={false} onOpen={() => setSelectedProvider(provider)} />
                   </FadeIn>
                 ))}
               </div>
@@ -233,11 +318,11 @@ export default function ProvidersPage() {
                       </h3>
                       <p style={{ fontSize: "14px", color: C.mid, marginBottom: "20px", lineHeight: 1.6 }}>
                         {isLoggedIn
-                          ? "Get full access to every provider, redemption codes, and step-by-step instructions. One-time $149."
+                          ? "Get full access to every provider, redemption codes, and step by step instructions. One time $149."
                           : "Create a free account or sign in to get started."}
                       </p>
                       <Link href={isLoggedIn ? "/credits" : "/login"} style={{ textDecoration: "none" }}>
-                        <button style={{ background: C.orange, color: "white", border: "none", borderRadius: C.radius, padding: "13px 28px", fontWeight: 700, cursor: "pointer", fontSize: "15px", display: "inline-flex", alignItems: "center", gap: "8px", fontFamily: "inherit", transition: "background 0.15s" }}
+                        <button onClick={(e) => { e.preventDefault(); router.push(isLoggedIn ? "/credits" : "/login"); }} style={{ background: C.orange, color: "white", border: "none", borderRadius: C.radius, padding: "13px 28px", fontWeight: 700, cursor: "pointer", fontSize: "15px", display: "inline-flex", alignItems: "center", gap: "8px", fontFamily: "inherit", transition: "background 0.15s" }}
                           onMouseEnter={e => (e.currentTarget.style.background = C.orangeHover)}
                           onMouseLeave={e => (e.currentTarget.style.background = C.orange)}>
                           <Zap style={{ width: "15px", height: "15px" }} />
@@ -246,13 +331,11 @@ export default function ProvidersPage() {
                         </button>
                       </Link>
                       {!isLoggedIn && (
-                        <Link href="/login" style={{ textDecoration: "none" }}>
-                          <p style={{ fontSize: "13px", color: C.mid, marginTop: "12px", cursor: "pointer" }}>
-                            Don't have an account? <span style={{ color: C.orange, fontWeight: 600 }}>Create one free →</span>
-                          </p>
-                        </Link>
+                        <p onClick={() => router.push("/login")} style={{ fontSize: "13px", color: C.mid, marginTop: "12px", cursor: "pointer" }}>
+                          Don&apos;t have an account? <span style={{ color: C.orange, fontWeight: 600 }}>Create one free →</span>
+                        </p>
                       )}
-                      <p style={{ fontSize: "12px", color: C.light, marginTop: "10px" }}>One-time payment · Instant access · Lifetime updates</p>
+                      <p style={{ fontSize: "12px", color: C.light, marginTop: "10px" }}>One time payment · Instant access · Lifetime updates</p>
                     </div>
                   </div>
                 </div>
@@ -262,11 +345,109 @@ export default function ProvidersPage() {
         </div>
       </div>
 
+      {selectedProvider && (
+        <div
+          onClick={() => setSelectedProvider(null)}
+          style={{ position: "fixed", inset: 0, background: "rgba(10,10,10,0.45)", zIndex: 120, display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{ width: "min(760px, 100%)", maxHeight: "85vh", overflowY: "auto", background: C.bg, border: `1px solid ${C.border}`, borderRadius: "16px", padding: "24px" }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "16px", marginBottom: "18px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                <Logo domain={selectedProvider.domain} name={selectedProvider.name} />
+                <div>
+                  <h3 style={{ margin: 0, fontSize: "24px", fontWeight: 900, color: C.ink, letterSpacing: "-0.5px" }}>{selectedProvider.name}</h3>
+                  <p style={{ margin: "4px 0 0", color: C.mid, fontSize: "13px" }}>{selectedProvider.category}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setSelectedProvider(null)}
+                style={{ border: `1px solid ${C.border}`, background: C.bg, borderRadius: "8px", padding: "7px 10px", cursor: "pointer", color: C.mid }}
+              >
+                Close
+              </button>
+            </div>
+
+            {selectedProvider.value && (
+              <div style={{ marginBottom: "14px", display: "inline-block", fontSize: "13px", fontWeight: 700, color: C.orange, background: "#fff3ee", border: `1px solid ${C.border}`, borderRadius: "999px", padding: "6px 12px" }}>
+                Value: {selectedProvider.value}
+              </div>
+            )}
+
+            <p style={{ color: C.ink, fontSize: "15px", lineHeight: 1.7, marginBottom: "12px" }}>
+              {selectedProvider.description || `${selectedProvider.name} offers startup focused incentives for founders.`}
+            </p>
+            <p style={{ color: C.mid, fontSize: "14px", lineHeight: 1.7, marginBottom: "20px" }}>
+              {providerNarrative(selectedProvider)}
+            </p>
+
+            {selectedProvider.name === "Sane Choice" && (
+              <div style={{ background: "#fff7f3", border: `1px solid ${C.border}`, borderRadius: "12px", padding: "16px", marginBottom: "20px" }}>
+                <p style={{ margin: "0 0 10px", fontSize: "12px", color: C.ink, fontWeight: 700 }}>What is included</p>
+                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                  {COMPANY_SETUP_HIGHLIGHTS.map((item) => (
+                    <div key={item} style={{ display: "flex", gap: "8px", alignItems: "flex-start" }}>
+                      <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: C.orange, marginTop: "6px", flexShrink: 0 }} />
+                      <span style={{ fontSize: "12px", color: C.mid, lineHeight: 1.55 }}>{item}</span>
+                    </div>
+                  ))}
+                </div>
+                <p style={{ margin: "12px 0 0", fontSize: "11px", color: C.light }}>Based on publicly listed service details and case references from sanechoice.hk.</p>
+              </div>
+            )}
+
+            {selectedProvider.tags && selectedProvider.tags.length > 0 && (
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "22px" }}>
+                {selectedProvider.tags.map((tag) => (
+                  <span key={tag} style={{ fontSize: "12px", padding: "4px 10px", borderRadius: "999px", background: C.surface, border: `1px solid ${C.border}`, color: C.mid }}>
+                    {tag.replace(/-/g, " ")}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+              <button onClick={() => { 
+                const url = selectedProvider.applyUrl || `https://${selectedProvider.domain}`;
+                window.open(url, '_blank');
+              }} style={{ background: C.ink, color: "#fff", border: "none", borderRadius: C.radius, padding: "11px 16px", fontWeight: 700, cursor: "pointer", fontSize: "14px", display: "inline-flex", alignItems: "center", gap: "7px", fontFamily: "inherit" }}>
+                {selectedProvider.name === "Sane Choice" ? "Book Consultation" : "Apply Now"} <ExternalLink style={{ width: "13px", height: "13px" }} />
+              </button>
+              <button onClick={() => window.open(`https://${selectedProvider.domain}`, '_blank')} style={{ background: C.orange, color: "#fff", border: "none", borderRadius: C.radius, padding: "11px 16px", fontWeight: 700, cursor: "pointer", fontSize: "14px", fontFamily: "inherit" }}>
+                Visit Provider Site
+              </button>
+              <button
+                onClick={() => setSelectedProvider(null)}
+                style={{ background: C.bg, color: C.mid, border: `1px solid ${C.border}`, borderRadius: C.radius, padding: "11px 16px", fontWeight: 600, cursor: "pointer", fontSize: "14px", fontFamily: "inherit" }}
+              >
+                Back to Providers
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* FOOTER */}
       <div style={{ borderTop: `1px solid ${C.border}`, padding: "32px 48px", marginTop: "80px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "16px" }}>
-        <span style={{ color: C.ink, fontWeight: 800, fontSize: "14px", letterSpacing: "0.08em", textTransform: "uppercase" }}>FOUNDER OS</span>
-        <p style={{ fontSize: "13px", color: C.light }}>Built for founders, by founders.</p>
+        <span style={{ color: C.ink, fontWeight: 800, fontSize: "14px", letterSpacing: "0.08em", textTransform: "uppercase" }}>Launch Perks</span>
+        <div style={{ display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap" }}>
+          <Link href="/about" style={{ fontSize: "13px", color: C.mid, textDecoration: "none" }}>About Us</Link>
+          <Link href="/terms" style={{ fontSize: "13px", color: C.mid, textDecoration: "none" }}>Terms</Link>
+          <Link href="/privacy" style={{ fontSize: "13px", color: C.mid, textDecoration: "none" }}>Privacy</Link>
+          <Link href="/contact" style={{ fontSize: "13px", color: C.mid, textDecoration: "none" }}>Contact</Link>
+          <p style={{ fontSize: "13px", color: C.light }}>Built for founders, by founders.</p>
+        </div>
       </div>
     </div>
+  );
+}
+
+export default function ProvidersPage() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: "100vh", background: C.bg }} />}>
+      <ProvidersPageContent />
+    </Suspense>
   );
 }

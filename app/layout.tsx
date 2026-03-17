@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Founder OS",
-  description: "The Ultimate Founder Toolkit",
+  title: "Launch Perks",
+  description: "Unlock $500K+ in startup credits from AWS, Google Cloud, Stripe and more.",
 };
 
 export default function RootLayout({

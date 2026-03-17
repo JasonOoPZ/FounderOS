@@ -1,4 +1,4 @@
-# Product Architecture: Founder OS
+# Product Architecture: Launch Perks
 
 ## Tech Stack
 * Frontend: Next.js 14 (App Router), React, TypeScript

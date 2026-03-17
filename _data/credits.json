@@ -59,16 +59,16 @@
   {
     "vendor": "Notion",
     "name": "Notion for Startups",
-    "value": "$6,000",
+    "value": "$12,000",
     "category": "Productivity",
     "eligibility": [
       "Bootstrapped",
       "Funded",
       "Accelerator"
     ],
-    "public_description": "Up to 6 months free Notion Business Plan including Notion AI, worth up to $6,000.",
-    "locked_instructions": "1. Go to notion.com/startups\n2. Non-partner startups get 3 months free, apply directly.\n3. Partner-affiliated startups get 6 months free.\n4. Must be a new non-paying Notion customer with under 100 employees.",
-    "applyUrl": "https://www.notion.com/startups"
+    "public_description": "Up to 6 months of Notion startup benefits worth up to $12,000.",
+    "locked_instructions": "1. Go to notion.so/startups-apply\n2. Complete the startup application form.\n3. Eligible startups can receive up to 6 months of benefits.\n4. Ensure your team and company details are accurate before submission.",
+    "applyUrl": "https://notion.so/startups-apply"
   },
   {
     "vendor": "Stripe",
@@ -595,15 +595,16 @@
   {
     "vendor": "Preferences AI",
     "name": "AI Market Research Credit",
-    "value": "$1,000",
+    "value": "$500",
     "category": "AI",
     "eligibility": [
       "Bootstrapped",
       "Funded",
       "Accelerator"
     ],
-    "public_description": "Preferences AI combines real customer surveys with AI agents trained on thousands of lifelike personas to deliver instant market research. Skip weeks of waiting and get real-time insights into what your customers actually want.",
-    "locked_instructions": "1. Visit preferencesai.io\n2. Click Request Demo and mention Founder OS in your message.\n3. You will receive $1,000 in platform credits upon onboarding.\n4. Use credits for surveys, AI persona research, and real-time market analysis.",
+    "mustHave": true,
+    "public_description": "Preferences AI is a consumer insights and market simulation platform. Teams can bring their own data or launch streamlined surveys to generate fresh input, then create dynamic digital personas to run predictive simulations and market projections.",
+    "locked_instructions": "1. Visit preferencesai.io and request a demo.\n2. Mention Launch Perks and your startup stage.\n3. Complete onboarding to unlock $500 in platform credits.\n4. Use credits for BYOD analysis, survey-based persona creation, and predictive market simulations.",
     "applyUrl": "https://www.preferencesai.io"
   },
   {

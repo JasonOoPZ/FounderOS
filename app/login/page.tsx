@@ -1,32 +1,46 @@
 "use client";
 
-import { useState } from "react";
-import { createClient } from "@supabase/supabase-js";
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   async function handleGoogleLogin() {
-    await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: { redirectTo: `${window.location.origin}/dashboard` },
-    });
+    try {
+      await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo: `${window.location.origin}/auth/callback` },
+      });
+    } catch (err) {
+      console.error("Google login error:", err);
+      setError("Failed to start Google login. Please try again.");
+    }
   }
 
   async function handleEmailLogin() {
     setError("");
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) setError(error.message);
-    else router.push("/dashboard");
+    try {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) setError(error.message);
+      else router.push("/dashboard");
+    } catch (err) {
+      console.error("Email login error:", err);
+      setError("Login failed. Please try again.");
+    }
+  }
+
+  if (!mounted) {
+    return null;
   }
 
   return (
@@ -34,7 +48,7 @@ export default function LoginPage() {
       <div style={{ width: "100%", maxWidth: "400px", padding: "24px" }}>
 
         <div style={{ textAlign: "center", marginBottom: "32px" }}>
-          <span style={{ fontWeight: 600, fontSize: "0.95rem", letterSpacing: "0.12em", color: "#09090b" }}>FOUNDER OS</span>
+          <span style={{ fontWeight: 600, fontSize: "0.95rem", letterSpacing: "0.12em", color: "#09090b" }}>Launch Perks</span>
         </div>
 
         <div style={{ background: "#fff", border: "1px solid #e4e4e7", borderRadius: "16px", padding: "40px" }}>
