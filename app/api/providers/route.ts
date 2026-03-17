@@ -4,6 +4,31 @@ import { providers, FREE_COUNT } from "../../../lib/providers-data";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || ""
 
+function parseSavingsValue(value?: string): number {
+  if (!value || !/[\$€£]/.test(value)) return 0
+  const normalized = value.replace(/,/g, "")
+  const numberMatch = normalized.match(/\d+(?:\.\d+)?/)
+  if (!numberMatch) return 0
+
+  let amount = Number(numberMatch[0])
+  if (/\b(billion|b)\b/i.test(normalized)) amount *= 1_000_000_000
+  else if (/\b(million|m)\b/i.test(normalized)) amount *= 1_000_000
+  else if (/\bk\b/i.test(normalized)) amount *= 1_000
+  return amount
+}
+
+function formatSavingsLabel(total: number): string {
+  if (total >= 1_000_000_000) return `$${(total / 1_000_000_000).toFixed(1)}B+`
+  if (total >= 1_000_000) return `$${(total / 1_000_000).toFixed(1)}M+`
+  if (total >= 1_000) return `$${Math.round(total / 1_000)}K+`
+  return `$${Math.round(total)}+`
+}
+
+const totalPotentialSavings = providers.reduce((sum, provider) => {
+  return sum + parseSavingsValue(provider.value)
+}, 0)
+const totalPotentialSavingsLabel = formatSavingsLabel(totalPotentialSavings)
+
 export async function GET(req: NextRequest) {
   try {
     const authHeader = req.headers.get("authorization")
@@ -50,6 +75,8 @@ export async function GET(req: NextRequest) {
           locked: [],
           isPro: true,
           total: providers.length,
+          totalPotentialSavings,
+          totalPotentialSavingsLabel,
         },
         siteUrl
           ? {
@@ -75,6 +102,8 @@ export async function GET(req: NextRequest) {
         locked: lockedProviders,
         isPro: false,
         total: providers.length,
+        totalPotentialSavings,
+        totalPotentialSavingsLabel,
       },
       siteUrl
         ? {

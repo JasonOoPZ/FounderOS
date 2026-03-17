@@ -116,6 +116,7 @@ function ProvidersPageContent() {
   const [isPro, setIsPro] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [selectedProvider, setSelectedProvider] = useState<Provider | null>(null);
+  const [potentialSavingsLabel, setPotentialSavingsLabel] = useState("$1M+");
 
   useEffect(() => {
     async function fetchProviders() {
@@ -136,6 +137,7 @@ function ProvidersPageContent() {
         setLockedProviders(data.locked || []);
         setTotal(data.total || 0);
         setIsPro(data.isPro || false);
+        setPotentialSavingsLabel(data.totalPotentialSavingsLabel || "$1M+");
         setIsLoggedIn(!!session);
       } catch (err) {
         console.error("Failed to fetch providers", err);
@@ -215,7 +217,7 @@ function ProvidersPageContent() {
               {isPro && <span style={{ color: C.ink, fontWeight: 700 }}>Full access unlocked. 🎉</span>}
             </p>
             <div style={{ display: "flex", gap: "40px", flexWrap: "wrap", marginBottom: "40px" }}>
-              {[{ num: `${total}+`, label: "Total Providers" }, { num: "20+", label: "Categories" }, { num: "$1M+", label: "Potential Savings" }].map(({ num, label }) => (
+              {[{ num: `${total}+`, label: "Total Providers" }, { num: "20+", label: "Categories" }, { num: potentialSavingsLabel, label: "Potential Savings" }].map(({ num, label }) => (
                 <div key={label}>
                   <div style={{ fontSize: "28px", fontWeight: 900, color: C.ink, letterSpacing: "-1px" }}>{num}</div>
                   <div style={{ fontSize: "12px", color: C.mid, marginTop: "2px", fontWeight: 500 }}>{label}</div>
