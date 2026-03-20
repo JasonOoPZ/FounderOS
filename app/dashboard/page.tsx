@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Lock, CheckCircle, LogOut, Zap, ArrowRight, CreditCard, BookOpen, Grid, ExternalLink, ChevronDown, ChevronRight, Search, AlertCircle } from "lucide-react";
+import { Lock, CheckCircle, Zap, ArrowRight, CreditCard, BookOpen, Grid, ExternalLink, ChevronDown, ChevronRight, Search, AlertCircle } from "lucide-react";
 import creditsData from "@/_data/credits.json";
 import { supabase } from "@/lib/supabase";
 import { WorkspaceAccountBar } from "@/components/workspace-account-bar";
+import { WorkspaceTopNav } from "@/components/workspace-top-nav";
 
 interface User {
   id: string;
@@ -331,6 +332,7 @@ export default function DashboardPage() {
     : null;
 
   const workspaceViewLabel = activeTab === "providers" ? "Providers" : "Dashboard";
+  const navView = activeTab === "providers" ? "Providers" : "Must Haves";
 
   const showFeaturedSetup =
     !!activeFeaturedSetup &&
@@ -375,10 +377,12 @@ export default function DashboardPage() {
   );
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", background: C.surface, fontFamily: "'Inter', sans-serif", WebkitFontSmoothing: "antialiased" }}>
+    <div style={{ minHeight: "100vh", background: C.surface, fontFamily: "'Inter', sans-serif", WebkitFontSmoothing: "antialiased" }}>
+      <WorkspaceTopNav activeView={navView} isLoggedIn={true} />
+      <div style={{ display: "flex", minHeight: "calc(100vh - 58px)" }}>
 
       {/* SIDEBAR */}
-      <aside style={{ width: "220px", borderRight: `1px solid ${C.border}`, background: C.bg, display: "flex", flexDirection: "column", position: "fixed", top: 0, left: 0, bottom: 0, zIndex: 40 }}>
+      <aside style={{ width: "220px", borderRight: `1px solid ${C.border}`, background: C.bg, display: "flex", flexDirection: "column", position: "fixed", top: "58px", left: 0, bottom: 0, zIndex: 40 }}>
         <div style={{ padding: "20px 20px 16px", borderBottom: `1px solid ${C.border}` }}>
           <Link href="/" style={{ textDecoration: "none" }}>
             <span style={{ fontWeight: 800, fontSize: "14px", letterSpacing: "0.08em", textTransform: "uppercase", color: C.ink }}>Launch Perks</span>
@@ -427,15 +431,10 @@ export default function DashboardPage() {
           </div>
         )}
 
-        <div style={{ padding: "16px" }}>
-          <button onClick={handleSignOut} style={{ display: "flex", alignItems: "center", gap: "6px", background: "none", border: "none", cursor: "pointer", color: C.light, fontSize: "13px", padding: 0 }}>
-            <LogOut style={{ width: "13px", height: "13px" }} /> Sign out
-          </button>
-        </div>
       </aside>
 
       {/* MAIN */}
-      <main style={{ marginLeft: "220px", flex: 1, padding: "40px 48px" }}>
+      <main style={{ marginLeft: "220px", flex: 1, padding: "32px 48px" }}>
         <WorkspaceAccountBar
           currentView={workspaceViewLabel}
           email={user?.email ?? ""}
@@ -852,6 +851,7 @@ export default function DashboardPage() {
           </div>
         )}
       </main>
+      </div>
     </div>
   );
 }
