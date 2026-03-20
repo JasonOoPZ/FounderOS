@@ -5,6 +5,8 @@ import { motion, useInView } from "framer-motion";
 import { Lock, CheckCircle, ArrowRight, Zap, ExternalLink, Star } from "lucide-react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
+import { WorkspaceAccountBar } from "@/components/workspace-account-bar";
+import { WorkspaceTopNav } from "@/components/workspace-top-nav";
 
 const C = {
   bg:          "#ffffff",
@@ -161,6 +163,7 @@ export default function CreditsClient({ credits }: { credits: Credit[] }) {
   const [showMustHaveOnly, setShowMustHaveOnly] = useState(false);
   const [isPro, setIsPro] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
   const [loading, setLoading] = useState(true);
   const [selectedCredit, setSelectedCredit] = useState<Credit | null>(null);
   const [visitShift, setVisitShift] = useState(0);
@@ -170,6 +173,7 @@ export default function CreditsClient({ credits }: { credits: Credit[] }) {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) { setLoading(false); return; }
       setIsLoggedIn(true);
+      setUserEmail(session.user.email ?? "");
       const { data } = await supabase
         .from("users")
         .select("is_pro")
@@ -229,29 +233,27 @@ export default function CreditsClient({ credits }: { credits: Credit[] }) {
 
   const mustHaveCount = credits.filter(c => c.mustHave).length;
 
+  async function handleSignOut() {
+    await supabase.auth.signOut();
+    window.location.href = "/";
+  }
+
   return (
     <div style={{ background: C.surface, minHeight: "100vh", fontFamily: "'Inter', sans-serif", WebkitFontSmoothing: "antialiased" }}>
 
       {/* NAV */}
-      <nav style={{ position: "sticky", top: 0, zIndex: 50, background: C.bg, borderBottom: `1px solid ${C.border}`, height: "58px", display: "flex", alignItems: "center", padding: "0 48px", justifyContent: "space-between" }}>
-        <Link href="/" style={{ textDecoration: "none" }}>
-          <span style={{ color: C.ink, fontWeight: 800, fontSize: "15px", letterSpacing: "0.08em", textTransform: "uppercase" }}>Launch Perks</span>
-        </Link>
-        <div style={{ display: "flex", alignItems: "center", gap: "32px" }}>
-          <Link href="/directory" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Directory</Link>
-          <Link href="/providers" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Providers</Link>
-          {isLoggedIn ? (
-            <Link href="/dashboard" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Dashboard</Link>
-          ) : (
-            <Link href="/login" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Sign In</Link>
-          )}
-          <span style={{ color: C.ink, fontSize: "14px", fontWeight: 600 }}>Must Haves</span>
-        </div>
-      </nav>
+      <WorkspaceTopNav activeView="Must Haves" isLoggedIn={isLoggedIn} />
 
       {/* HEADER */}
       <div style={{ background: C.bg, borderBottom: `1px solid ${C.border}`, padding: "72px 48px 56px" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+          <WorkspaceAccountBar
+            currentView="Must Haves"
+            email={userEmail}
+            isLoggedIn={isLoggedIn}
+            isPro={isPro}
+            onSignOut={handleSignOut}
+          />
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <div style={{ width: "40px", height: "4px", background: C.orange, borderRadius: "2px", marginBottom: "28px" }} />
             <p style={{ fontSize: "11px", color: C.light, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "12px", fontWeight: 600 }}>

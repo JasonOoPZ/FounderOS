@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { WorkspaceAccountBar } from "@/components/workspace-account-bar";
+import { WorkspaceTopNav } from "@/components/workspace-top-nav";
 
 const C = {
   bg:          "#ffffff",
@@ -268,27 +269,7 @@ function ProvidersPageContent() {
     <div style={{ background: C.bg, minHeight: "100vh", fontFamily: "'Inter', sans-serif", WebkitFontSmoothing: "antialiased" }}>
 
       {/* NAV */}
-      <nav style={{ position: "sticky", top: 0, zIndex: 50, background: C.bg, borderBottom: `1px solid ${C.border}`, height: "58px", display: "flex", alignItems: "center", padding: "0 48px", justifyContent: "space-between" }}>
-        <Link href="/" style={{ textDecoration: "none" }}>
-          <span style={{ color: C.ink, fontWeight: 800, fontSize: "15px", letterSpacing: "0.08em", textTransform: "uppercase" }}>Launch Perks</span>
-        </Link>
-        <div style={{ display: "flex", alignItems: "center", gap: "32px" }}>
-          <Link href="/directory" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Directory</Link>
-          <span onClick={() => router.push("/providers")} style={{ color: C.ink, fontSize: "14px", fontWeight: 600, cursor: "pointer" }}>Providers</span>
-          {isLoggedIn ? (
-            <Link href="/dashboard" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Dashboard</Link>
-          ) : (
-            <Link href="/login" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Sign In</Link>
-          )}
-          <Link href="/credits" style={{ textDecoration: "none" }}>
-            <button onClick={(e) => { e.preventDefault(); router.push("/credits"); }} style={{ background: C.orange, color: "white", border: "none", borderRadius: C.radius, padding: "9px 20px", fontWeight: 600, cursor: "pointer", fontSize: "14px", fontFamily: "inherit", transition: "background 0.15s" }}
-              onMouseEnter={e => (e.currentTarget.style.background = C.orangeHover)}
-              onMouseLeave={e => (e.currentTarget.style.background = C.orange)}>
-              Unlock Credits
-            </button>
-          </Link>
-        </div>
-      </nav>
+      <WorkspaceTopNav activeView="Providers" isLoggedIn={isLoggedIn} />
 
       {/* HERO */}
       <div style={{ background: C.bg, borderBottom: `1px solid ${C.border}`, padding: "72px 48px 56px" }}>

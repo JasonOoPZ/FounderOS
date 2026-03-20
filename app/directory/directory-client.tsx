@@ -7,6 +7,7 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { FREE_DIRECTORY_COUNT } from "@/lib/constants";
 import { WorkspaceAccountBar } from "@/components/workspace-account-bar";
+import { WorkspaceTopNav } from "@/components/workspace-top-nav";
 
 const C = {
   bg:          "#ffffff",
@@ -181,38 +182,19 @@ export default function DirectoryClient({ resources, categories }: { resources: 
     <div style={{ background: C.bg, minHeight: "100vh", fontFamily: "'Inter', sans-serif", WebkitFontSmoothing: "antialiased" }}>
 
       {/* NAV */}
-      <nav style={{ position: "sticky", top: 0, zIndex: 50, background: C.bg, borderBottom: `1px solid ${C.border}`, height: "58px", display: "flex", alignItems: "center", padding: "0 48px", justifyContent: "space-between" }}>
-        <Link href="/" style={{ textDecoration: "none" }}>
-          <span style={{ color: C.ink, fontWeight: 800, fontSize: "15px", letterSpacing: "0.08em", textTransform: "uppercase" }}>LAUNCH PERKS</span>
-        </Link>
-        <div style={{ display: "flex", alignItems: "center", gap: "32px" }}>
-          <span style={{ color: C.ink, fontSize: "14px", fontWeight: 600 }}>Directory</span>
-          <Link href="/providers" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Providers</Link>
-          {isLoggedIn ? (
-            <Link href="/dashboard" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Dashboard</Link>
-          ) : (
-            <Link href="/login" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Sign In</Link>
-          )}
-          <Link href="/credits" style={{ textDecoration: "none" }}>
-            <button style={{ background: C.orange, color: "white", border: "none", borderRadius: C.radius, padding: "9px 20px", fontWeight: 600, cursor: "pointer", fontSize: "14px", fontFamily: "inherit", transition: "background 0.15s" }}
-              onMouseEnter={e => (e.currentTarget.style.background = C.orangeHover)}
-              onMouseLeave={e => (e.currentTarget.style.background = C.orange)}>
-              Unlock Must Haves
-            </button>
-          </Link>
-        </div>
-      </nav>
+      <WorkspaceTopNav activeView="Directory" isLoggedIn={isLoggedIn} />
 
       {/* HERO */}
       <div style={{ background: C.bg, borderBottom: `1px solid ${C.border}`, padding: "64px 48px 48px" }}>
-        <WorkspaceAccountBar
-          currentView="Directory"
-          email={userEmail}
-          isLoggedIn={isLoggedIn}
-          isPro={isPro}
-          onSignOut={handleSignOut}
-        />
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+          <WorkspaceAccountBar
+            currentView="Directory"
+            email={userEmail}
+            isLoggedIn={isLoggedIn}
+            isPro={isPro}
+            onSignOut={handleSignOut}
+          />
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <div style={{ width: "48px", height: "4px", background: C.orange, borderRadius: "2px", marginBottom: "20px" }} />
           <p style={{ fontSize: "11px", color: C.light, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "10px", fontWeight: 700 }}>Results First Toolkit</p>
           <h1 style={{ fontSize: "clamp(34px, 5vw, 58px)", fontWeight: 900, letterSpacing: "-2px", lineHeight: 1.02, color: C.ink, marginBottom: "12px", maxWidth: "920px" }}>
@@ -283,7 +265,8 @@ export default function DirectoryClient({ resources, categories }: { resources: 
               onFocus={e => (e.currentTarget.style.borderColor = C.orange)}
               onBlur={e => (e.currentTarget.style.borderColor = C.border)} />
           </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
 
       {/* BODY: SIDEBAR + CONTENT */}
