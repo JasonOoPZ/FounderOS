@@ -141,7 +141,6 @@ export default function DirectoryClient({ resources, categories }: { resources: 
         <div style={{ display: "flex", alignItems: "center", gap: "32px" }}>
           <span style={{ color: C.ink, fontSize: "14px", fontWeight: 600 }}>Directory</span>
           <Link href="/providers" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Providers</Link>
-          <Link href="/providers?category=Company%20Setup" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Company Setup</Link>
           {isLoggedIn ? (
             <Link href="/dashboard" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Dashboard</Link>
           ) : (

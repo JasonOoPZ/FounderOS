@@ -44,6 +44,31 @@ const COMPANY_SETUP_HIGHLIGHTS = [
   "Document checklist support, including KYC for beneficial owners and entity setup paperwork.",
 ];
 
+const PREFERENCES_AI_HIGHLIGHTS = [
+  "Bring your own customer data or launch targeted surveys to seed high quality preference signals.",
+  "Build digital personas that model how customer segments respond before launching campaigns or features.",
+  "Run predictive market simulations to compare product positioning, messaging, and pricing options.",
+  "Use startup credits to test GTM assumptions faster and reduce wasted spend on early experiments.",
+  "Turn qualitative feedback and behavioral data into repeatable decision support for product and growth teams.",
+];
+
+const FEATURED_SETUP_ORDER = ["Sane Choice", "Preferences AI"];
+
+const FEATURED_SETUP_DETAILS: Record<string, { title: string; subtitle: string; highlights: string[]; ctaLabel: string }> = {
+  "Sane Choice": {
+    title: "BVI incorporation plus Hong Kong banking setup",
+    subtitle: "Featured Company Setup",
+    highlights: COMPANY_SETUP_HIGHLIGHTS,
+    ctaLabel: "Book Consultation",
+  },
+  "Preferences AI": {
+    title: "AI powered preference modeling for faster GTM setup",
+    subtitle: "Featured Setup Partner",
+    highlights: PREFERENCES_AI_HIGHLIGHTS,
+    ctaLabel: "Visit Preferences AI",
+  },
+};
+
 function Logo({ domain, name }: { domain: string; name: string }) {
   const [failed, setFailed] = useState(false);
   const logoUrl = `/api/logo?domain=${encodeURIComponent(domain)}&size=40`;
@@ -117,6 +142,8 @@ function ProvidersPageContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [selectedProvider, setSelectedProvider] = useState<Provider | null>(null);
   const [potentialSavingsLabel, setPotentialSavingsLabel] = useState("$1M+");
+  const [featuredSetupIndex, setFeaturedSetupIndex] = useState(0);
+  const [featuredSetupVisible, setFeaturedSetupVisible] = useState(true);
 
   useEffect(() => {
     async function fetchProviders() {
@@ -153,7 +180,7 @@ function ProvidersPageContent() {
     setActiveCategory(categoryParam || "All");
   }, [searchParams]);
 
-  const allCategories = ["All", ...Array.from(new Set(freeProviders.map(p => p.category))).sort()];
+  const allCategories = ["All", ...Array.from(new Set(freeProviders.map(p => p.category))).sort().filter((cat) => cat !== "Company Setup")];
 
   const filteredFree = freeProviders.filter(p => {
     const matchSearch = p.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -163,11 +190,40 @@ function ProvidersPageContent() {
     return matchSearch && matchCat;
   });
 
-  const featuredCompanySetup = freeProviders.find((p) => p.name === "Sane Choice");
-  const shouldShowCompanySetupFeature =
-    !!featuredCompanySetup &&
-    (activeCategory === "All" || activeCategory === "Company Setup") &&
-    (search.trim().length === 0 || "sane choice company setup bvi banking hong kong".includes(search.toLowerCase()));
+  const featuredSetups = FEATURED_SETUP_ORDER
+    .map((name) => freeProviders.find((p) => p.name === name))
+    .filter((provider): provider is Provider => Boolean(provider));
+
+  const activeFeaturedSetup = featuredSetups.length > 0
+    ? featuredSetups[featuredSetupIndex % featuredSetups.length]
+    : null;
+
+  const activeFeaturedSetupDetails = activeFeaturedSetup
+    ? FEATURED_SETUP_DETAILS[activeFeaturedSetup.name]
+    : null;
+
+  const shouldShowFeaturedSetup =
+    !!activeFeaturedSetup &&
+    search.trim().length === 0;
+
+  useEffect(() => {
+    setFeaturedSetupIndex(0);
+    setFeaturedSetupVisible(true);
+  }, [featuredSetups.length]);
+
+  useEffect(() => {
+    if (featuredSetups.length <= 1) return;
+
+    const interval = window.setInterval(() => {
+      setFeaturedSetupVisible(false);
+      window.setTimeout(() => {
+        setFeaturedSetupIndex((prev) => (prev + 1) % featuredSetups.length);
+        setFeaturedSetupVisible(true);
+      }, 350);
+    }, 10000);
+
+    return () => window.clearInterval(interval);
+  }, [featuredSetups.length]);
 
   const remainingCount = total - freeProviders.length;
 
@@ -188,7 +244,6 @@ function ProvidersPageContent() {
         <div style={{ display: "flex", alignItems: "center", gap: "32px" }}>
           <Link href="/directory" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Directory</Link>
           <span onClick={() => router.push("/providers")} style={{ color: C.ink, fontSize: "14px", fontWeight: 600, cursor: "pointer" }}>Providers</span>
-          <Link href="/providers?category=Company%20Setup" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Company Setup</Link>
           {isLoggedIn ? (
             <Link href="/dashboard" style={{ color: C.mid, fontSize: "14px", textDecoration: "none", fontWeight: 500 }}>Dashboard</Link>
           ) : (
@@ -250,23 +305,35 @@ function ProvidersPageContent() {
         </div>
       </div>
 
-      {shouldShowCompanySetupFeature && featuredCompanySetup && (
+      {shouldShowFeaturedSetup && activeFeaturedSetup && activeFeaturedSetupDetails && (
         <div style={{ background: C.surface, padding: "28px 48px 0" }}>
           <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-            <div style={{ background: "linear-gradient(135deg, #fff7f3 0%, #ffffff 60%)", border: `1px solid ${C.border}`, borderRadius: "14px", padding: "24px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px" }}>
+            <div
+              style={{
+                background: "linear-gradient(135deg, #fff7f3 0%, #ffffff 60%)",
+                border: `1px solid ${C.border}`,
+                borderRadius: "14px",
+                padding: "24px",
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                gap: "20px",
+                opacity: featuredSetupVisible ? 1 : 0,
+                transition: "opacity 0.35s ease",
+              }}
+            >
               <div>
-                <p style={{ fontSize: "11px", color: C.light, letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 600, marginBottom: "8px" }}>Featured Company Setup</p>
-                <h2 style={{ margin: 0, fontSize: "30px", color: C.ink, letterSpacing: "-0.8px", fontWeight: 900 }}>BVI incorporation plus Hong Kong banking setup</h2>
+                <p style={{ fontSize: "11px", color: C.light, letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 600, marginBottom: "8px" }}>{activeFeaturedSetupDetails.subtitle}</p>
+                <h2 style={{ margin: 0, fontSize: "30px", color: C.ink, letterSpacing: "-0.8px", fontWeight: 900 }}>{activeFeaturedSetupDetails.title}</h2>
                 <p style={{ fontSize: "14px", color: C.mid, lineHeight: 1.7, marginTop: "10px", marginBottom: "14px" }}>
-                  {featuredCompanySetup.description}
+                  {activeFeaturedSetup.description}
                 </p>
                 <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-                  <button onClick={() => setSelectedProvider(featuredCompanySetup)} style={{ background: C.ink, color: "#fff", border: "none", borderRadius: C.radius, padding: "10px 16px", fontWeight: 700, cursor: "pointer", fontSize: "13px", fontFamily: "inherit" }}>
+                  <button onClick={() => setSelectedProvider(activeFeaturedSetup)} style={{ background: C.ink, color: "#fff", border: "none", borderRadius: C.radius, padding: "10px 16px", fontWeight: 700, cursor: "pointer", fontSize: "13px", fontFamily: "inherit" }}>
                     View Setup Details
                   </button>
-                  {featuredCompanySetup.applyUrl && (
-                    <button onClick={() => window.open(featuredCompanySetup.applyUrl, '_blank')} style={{ background: C.orange, color: "#fff", border: "none", borderRadius: C.radius, padding: "10px 16px", fontWeight: 700, cursor: "pointer", fontSize: "13px", display: "inline-flex", alignItems: "center", gap: "6px", fontFamily: "inherit" }}>
-                      Book Consultation <ExternalLink style={{ width: "12px", height: "12px" }} />
+                  {(activeFeaturedSetup.applyUrl || activeFeaturedSetup.domain) && (
+                    <button onClick={() => window.open(activeFeaturedSetup.applyUrl || `https://${activeFeaturedSetup.domain}`, '_blank')} style={{ background: C.orange, color: "#fff", border: "none", borderRadius: C.radius, padding: "10px 16px", fontWeight: 700, cursor: "pointer", fontSize: "13px", display: "inline-flex", alignItems: "center", gap: "6px", fontFamily: "inherit" }}>
+                      {activeFeaturedSetupDetails.ctaLabel} <ExternalLink style={{ width: "12px", height: "12px" }} />
                     </button>
                   )}
                 </div>
@@ -274,7 +341,7 @@ function ProvidersPageContent() {
               <div style={{ background: C.bg, border: `1px solid ${C.border}`, borderRadius: "10px", padding: "14px" }}>
                 <p style={{ margin: 0, fontSize: "12px", color: C.ink, fontWeight: 700, marginBottom: "10px" }}>What founders get:</p>
                 <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                  {COMPANY_SETUP_HIGHLIGHTS.slice(0, 4).map((item) => (
+                  {activeFeaturedSetupDetails.highlights.slice(0, 4).map((item) => (
                     <div key={item} style={{ display: "flex", gap: "8px", alignItems: "flex-start" }}>
                       <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: C.orange, marginTop: "6px", flexShrink: 0 }} />
                       <span style={{ fontSize: "12px", color: C.mid, lineHeight: 1.55 }}>{item}</span>
@@ -385,18 +452,22 @@ function ProvidersPageContent() {
               {providerNarrative(selectedProvider)}
             </p>
 
-            {selectedProvider.name === "Sane Choice" && (
+            {(selectedProvider.name === "Sane Choice" || selectedProvider.name === "Preferences AI") && (
               <div style={{ background: "#fff7f3", border: `1px solid ${C.border}`, borderRadius: "12px", padding: "16px", marginBottom: "20px" }}>
                 <p style={{ margin: "0 0 10px", fontSize: "12px", color: C.ink, fontWeight: 700 }}>What is included</p>
                 <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                  {COMPANY_SETUP_HIGHLIGHTS.map((item) => (
+                  {(selectedProvider.name === "Sane Choice" ? COMPANY_SETUP_HIGHLIGHTS : PREFERENCES_AI_HIGHLIGHTS).map((item) => (
                     <div key={item} style={{ display: "flex", gap: "8px", alignItems: "flex-start" }}>
                       <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: C.orange, marginTop: "6px", flexShrink: 0 }} />
                       <span style={{ fontSize: "12px", color: C.mid, lineHeight: 1.55 }}>{item}</span>
                     </div>
                   ))}
                 </div>
-                <p style={{ margin: "12px 0 0", fontSize: "11px", color: C.light }}>Based on publicly listed service details and case references from sanechoice.hk.</p>
+                <p style={{ margin: "12px 0 0", fontSize: "11px", color: C.light }}>
+                  {selectedProvider.name === "Sane Choice"
+                    ? "Based on publicly listed service details and case references from sanechoice.hk."
+                    : "Based on publicly listed capabilities and positioning from preferencesai.io."}
+                </p>
               </div>
             )}
 
@@ -415,7 +486,7 @@ function ProvidersPageContent() {
                 const url = selectedProvider.applyUrl || `https://${selectedProvider.domain}`;
                 window.open(url, '_blank');
               }} style={{ background: C.ink, color: "#fff", border: "none", borderRadius: C.radius, padding: "11px 16px", fontWeight: 700, cursor: "pointer", fontSize: "14px", display: "inline-flex", alignItems: "center", gap: "7px", fontFamily: "inherit" }}>
-                {selectedProvider.name === "Sane Choice" ? "Book Consultation" : "Apply Now"} <ExternalLink style={{ width: "13px", height: "13px" }} />
+                {selectedProvider.name === "Sane Choice" ? "Book Consultation" : selectedProvider.name === "Preferences AI" ? "Visit Preferences AI" : "Apply Now"} <ExternalLink style={{ width: "13px", height: "13px" }} />
               </button>
               <button onClick={() => window.open(`https://${selectedProvider.domain}`, '_blank')} style={{ background: C.orange, color: "#fff", border: "none", borderRadius: C.radius, padding: "11px 16px", fontWeight: 700, cursor: "pointer", fontSize: "14px", fontFamily: "inherit" }}>
                 Visit Provider Site
