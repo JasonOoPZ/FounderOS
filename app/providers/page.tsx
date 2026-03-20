@@ -8,6 +8,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { WorkspaceAccountBar } from "@/components/workspace-account-bar";
 import { WorkspaceTopNav } from "@/components/workspace-top-nav";
+import { SHELL_LAYOUT } from "@/lib/ui-shell";
 
 const C = {
   bg:          "#ffffff",
@@ -272,8 +273,8 @@ function ProvidersPageContent() {
       <WorkspaceTopNav activeView="Providers" isLoggedIn={isLoggedIn} />
 
       {/* HERO */}
-      <div style={{ background: C.bg, borderBottom: `1px solid ${C.border}`, padding: "72px 48px 56px" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+      <div style={{ background: C.bg, borderBottom: `1px solid ${C.border}`, padding: `72px ${SHELL_LAYOUT.pageXPadding}px 56px` }}>
+        <div style={{ maxWidth: `${SHELL_LAYOUT.contentMaxWidth}px`, margin: "0 auto" }}>
           <WorkspaceAccountBar
             currentView="Providers"
             email={userEmail}
@@ -377,8 +378,8 @@ function ProvidersPageContent() {
       </div>
 
       {shouldShowFeaturedSetup && activeFeaturedSetup && activeFeaturedSetupDetails && (
-        <div style={{ background: C.surface, padding: "28px 48px 0" }}>
-          <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        <div style={{ background: C.surface, padding: `28px ${SHELL_LAYOUT.pageXPadding}px 0` }}>
+          <div style={{ maxWidth: `${SHELL_LAYOUT.contentMaxWidth}px`, margin: "0 auto" }}>
             <div
               style={{
                 background: "linear-gradient(135deg, #fff7f3 0%, #ffffff 60%)",
@@ -426,8 +427,8 @@ function ProvidersPageContent() {
       )}
 
       {/* GRID */}
-      <div style={{ background: C.surface, padding: "32px 48px 0" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+      <div style={{ background: C.surface, padding: `32px ${SHELL_LAYOUT.pageXPadding}px 0` }}>
+        <div style={{ maxWidth: `${SHELL_LAYOUT.contentMaxWidth}px`, margin: "0 auto" }}>
           {loading ? (
             <div style={{ textAlign: "center", padding: "80px 0", color: C.mid, fontSize: "14px" }}>Loading providers...</div>
           ) : (
@@ -574,7 +575,7 @@ function ProvidersPageContent() {
       )}
 
       {/* FOOTER */}
-      <div style={{ borderTop: `1px solid ${C.border}`, padding: "32px 48px", marginTop: "80px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "16px" }}>
+      <div style={{ borderTop: `1px solid ${C.border}`, padding: `32px ${SHELL_LAYOUT.pageXPadding}px`, marginTop: "80px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "16px" }}>
         <span style={{ color: C.ink, fontWeight: 800, fontSize: "14px", letterSpacing: "0.08em", textTransform: "uppercase" }}>Launch Perks</span>
         <div style={{ display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap" }}>
           <Link href="/about" style={{ fontSize: "13px", color: C.mid, textDecoration: "none" }}>About Us</Link>

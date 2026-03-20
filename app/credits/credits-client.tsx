@@ -7,6 +7,7 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { WorkspaceAccountBar } from "@/components/workspace-account-bar";
 import { WorkspaceTopNav } from "@/components/workspace-top-nav";
+import { SHELL_LAYOUT } from "@/lib/ui-shell";
 
 const C = {
   bg:          "#ffffff",
@@ -245,8 +246,8 @@ export default function CreditsClient({ credits }: { credits: Credit[] }) {
       <WorkspaceTopNav activeView="Must Haves" isLoggedIn={isLoggedIn} />
 
       {/* HEADER */}
-      <div style={{ background: C.bg, borderBottom: `1px solid ${C.border}`, padding: "72px 48px 56px" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+      <div style={{ background: C.bg, borderBottom: `1px solid ${C.border}`, padding: `72px ${SHELL_LAYOUT.pageXPadding}px 56px` }}>
+        <div style={{ maxWidth: `${SHELL_LAYOUT.contentMaxWidth}px`, margin: "0 auto" }}>
           <WorkspaceAccountBar
             currentView="Must Haves"
             email={userEmail}
@@ -321,7 +322,7 @@ export default function CreditsClient({ credits }: { credits: Credit[] }) {
       </div>
 
       {/* GRID */}
-      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "48px 48px" }}>
+      <div style={{ maxWidth: `${SHELL_LAYOUT.contentMaxWidth}px`, margin: "0 auto", padding: `48px ${SHELL_LAYOUT.pageXPadding}px` }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: "16px", alignItems: "stretch" }}>
           {eligible.map((credit, i) => {
             const domain = VENDOR_DOMAINS[credit.vendor] ?? credit.vendor.toLowerCase().replace(/\s+/g, "").replace(/[^a-z0-9]/g, "") + ".com";

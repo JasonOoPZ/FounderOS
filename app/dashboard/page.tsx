@@ -8,6 +8,7 @@ import creditsData from "@/_data/credits.json";
 import { supabase } from "@/lib/supabase";
 import { WorkspaceAccountBar } from "@/components/workspace-account-bar";
 import { WorkspaceTopNav } from "@/components/workspace-top-nav";
+import { SHELL_LAYOUT } from "@/lib/ui-shell";
 
 interface User {
   id: string;
@@ -379,10 +380,10 @@ export default function DashboardPage() {
   return (
     <div style={{ minHeight: "100vh", background: C.surface, fontFamily: "'Inter', sans-serif", WebkitFontSmoothing: "antialiased" }}>
       <WorkspaceTopNav activeView={navView} isLoggedIn={true} />
-      <div style={{ display: "flex", minHeight: "calc(100vh - 58px)" }}>
+      <div style={{ display: "flex", minHeight: `calc(100vh - ${SHELL_LAYOUT.topNavHeight}px)` }}>
 
       {/* SIDEBAR */}
-      <aside style={{ width: "220px", borderRight: `1px solid ${C.border}`, background: C.bg, display: "flex", flexDirection: "column", position: "fixed", top: "58px", left: 0, bottom: 0, zIndex: 40 }}>
+      <aside style={{ width: "220px", borderRight: `1px solid ${C.border}`, background: C.bg, display: "flex", flexDirection: "column", position: "fixed", top: `${SHELL_LAYOUT.topNavHeight}px`, left: 0, bottom: 0, zIndex: 40 }}>
         <div style={{ padding: "20px 20px 16px", borderBottom: `1px solid ${C.border}` }}>
           <Link href="/" style={{ textDecoration: "none" }}>
             <span style={{ fontWeight: 800, fontSize: "14px", letterSpacing: "0.08em", textTransform: "uppercase", color: C.ink }}>Launch Perks</span>
@@ -434,7 +435,7 @@ export default function DashboardPage() {
       </aside>
 
       {/* MAIN */}
-      <main style={{ marginLeft: "220px", flex: 1, padding: "32px 48px" }}>
+      <main style={{ marginLeft: "220px", flex: 1, padding: `32px ${SHELL_LAYOUT.pageXPadding}px` }}>
         <WorkspaceAccountBar
           currentView={workspaceViewLabel}
           email={user?.email ?? ""}

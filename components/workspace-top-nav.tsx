@@ -1,14 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { SHELL_COLORS, SHELL_LAYOUT } from "@/lib/ui-shell";
 
 const C = {
-  bg: "#ffffff",
-  ink: "#0a0a0a",
-  mid: "#6b6b6b",
-  border: "#e5e5e5",
-  orange: "#ff4d00",
-  orangeHover: "#e04400",
+  bg: SHELL_COLORS.bg,
+  ink: SHELL_COLORS.ink,
+  mid: SHELL_COLORS.mid,
+  border: SHELL_COLORS.border,
+  orange: SHELL_COLORS.orange,
+  orangeHover: SHELL_COLORS.orangeHover,
   radius: "8px",
 };
 
@@ -27,7 +28,7 @@ export function WorkspaceTopNav({ activeView, isLoggedIn }: WorkspaceTopNavProps
   ];
 
   return (
-    <nav style={{ position: "sticky", top: 0, zIndex: 50, background: C.bg, borderBottom: `1px solid ${C.border}`, height: "58px", display: "flex", alignItems: "center", padding: "0 48px", justifyContent: "space-between" }}>
+    <nav style={{ position: "sticky", top: 0, zIndex: 50, background: C.bg, borderBottom: `1px solid ${C.border}`, height: `${SHELL_LAYOUT.topNavHeight}px`, display: "flex", alignItems: "center", padding: `0 ${SHELL_LAYOUT.pageXPadding}px`, justifyContent: "space-between" }}>
       <Link href="/" style={{ textDecoration: "none" }}>
         <span style={{ color: C.ink, fontWeight: 800, fontSize: "15px", letterSpacing: "0.08em", textTransform: "uppercase" }}>Launch Perks</span>
       </Link>

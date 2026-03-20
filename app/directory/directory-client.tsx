@@ -8,6 +8,7 @@ import { supabase } from "@/lib/supabase";
 import { FREE_DIRECTORY_COUNT } from "@/lib/constants";
 import { WorkspaceAccountBar } from "@/components/workspace-account-bar";
 import { WorkspaceTopNav } from "@/components/workspace-top-nav";
+import { SHELL_LAYOUT } from "@/lib/ui-shell";
 
 const C = {
   bg:          "#ffffff",
@@ -185,8 +186,8 @@ export default function DirectoryClient({ resources, categories }: { resources: 
       <WorkspaceTopNav activeView="Directory" isLoggedIn={isLoggedIn} />
 
       {/* HERO */}
-      <div style={{ background: C.bg, borderBottom: `1px solid ${C.border}`, padding: "64px 48px 48px" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+      <div style={{ background: C.bg, borderBottom: `1px solid ${C.border}`, padding: `64px ${SHELL_LAYOUT.pageXPadding}px 48px` }}>
+        <div style={{ maxWidth: `${SHELL_LAYOUT.contentMaxWidth}px`, margin: "0 auto" }}>
           <WorkspaceAccountBar
             currentView="Directory"
             email={userEmail}
@@ -270,10 +271,10 @@ export default function DirectoryClient({ resources, categories }: { resources: 
       </div>
 
       {/* BODY: SIDEBAR + CONTENT */}
-      <div style={{ display: "flex", minHeight: "calc(100vh - 58px)" }}>
+      <div style={{ display: "flex", minHeight: `calc(100vh - ${SHELL_LAYOUT.topNavHeight}px)` }}>
 
         {/* SIDEBAR */}
-        <aside style={{ width: "220px", flexShrink: 0, borderRight: `1px solid ${C.border}`, position: "sticky", top: "58px", height: "calc(100vh - 58px)", overflowY: "auto", background: C.bg, padding: "20px 12px" }}>
+        <aside style={{ width: "220px", flexShrink: 0, borderRight: `1px solid ${C.border}`, position: "sticky", top: `${SHELL_LAYOUT.topNavHeight}px`, height: `calc(100vh - ${SHELL_LAYOUT.topNavHeight}px)`, overflowY: "auto", background: C.bg, padding: "20px 12px" }}>
           <p style={{ fontSize: "10px", color: C.light, letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 600, marginBottom: "10px", paddingLeft: "8px" }}>Categories</p>
           {sortedCategories.map(cat => (
             <button key={cat} onClick={() => setActiveCategory(cat)}
@@ -385,7 +386,7 @@ export default function DirectoryClient({ resources, categories }: { resources: 
       </div>
 
       {/* FOOTER */}
-      <div style={{ borderTop: `1px solid ${C.border}`, padding: "32px 48px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "16px" }}>
+      <div style={{ borderTop: `1px solid ${C.border}`, padding: `32px ${SHELL_LAYOUT.pageXPadding}px`, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "16px" }}>
         <span style={{ color: C.ink, fontWeight: 800, fontSize: "14px", letterSpacing: "0.08em", textTransform: "uppercase" }}>LAUNCH PERKS</span>
         <div style={{ display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap" }}>
           <Link href="/about" style={{ fontSize: "13px", color: C.mid, textDecoration: "none" }}>About Us</Link>

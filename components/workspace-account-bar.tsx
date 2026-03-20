@@ -3,16 +3,17 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ChevronDown, CreditCard, LayoutDashboard, LogOut, Sparkles } from "lucide-react";
+import { SHELL_COLORS, SHELL_LAYOUT } from "@/lib/ui-shell";
 
 const C = {
-  bg: "#ffffff",
+  bg: SHELL_COLORS.bg,
   surface: "#f7f7f5",
-  ink: "#0a0a0a",
-  mid: "#6b6b6b",
+  ink: SHELL_COLORS.ink,
+  mid: SHELL_COLORS.mid,
   light: "#a3a3a3",
-  border: "#e5e5e5",
-  orange: "#ff4d00",
-  orangeHover: "#e04400",
+  border: SHELL_COLORS.border,
+  orange: SHELL_COLORS.orange,
+  orangeHover: SHELL_COLORS.orangeHover,
   radius: "8px",
 };
 
@@ -34,7 +35,7 @@ export function WorkspaceAccountBar({ currentView, email, isLoggedIn, isPro, onS
         border: `1px solid ${C.border}`,
         borderRadius: "14px",
         padding: "16px 18px",
-        marginBottom: "22px",
+        marginBottom: `${SHELL_LAYOUT.accountBarGapBottom}px`,
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
