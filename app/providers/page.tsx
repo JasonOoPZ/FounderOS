@@ -2,7 +2,7 @@
 
 import { Suspense, useState, useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
-import { Search, Lock, ArrowRight, Zap, ExternalLink } from "lucide-react";
+import { Search, Lock, ArrowRight, Zap, ExternalLink, Clock3, DollarSign, Target } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
@@ -68,6 +68,32 @@ const FEATURED_SETUP_DETAILS: Record<string, { title: string; subtitle: string; 
     ctaLabel: "Visit Preferences AI",
   },
 };
+
+const PROVIDER_OUTCOME_FOCUS = {
+  speed: {
+    label: "Ship Faster",
+    headline: "Find the right provider in minutes, not weeks.",
+    subcopy: "Skip random browsing and move straight to partner options that help you execute this quarter.",
+    proof: "Shortlist providers by outcome and category so your team can make decisions fast.",
+    urgency: "Every delayed decision slows product velocity and GTM execution.",
+  },
+  burn: {
+    label: "Reduce Burn",
+    headline: "Protect runway with credits and high leverage provider choices.",
+    subcopy: "Use proven perks and discounts to cut non-core spend while keeping momentum high.",
+    proof: "Curated providers and credits can free budget for growth, hiring, and customer acquisition.",
+    urgency: "Burn compounds monthly. Better provider choices now buy you more runway later.",
+  },
+  focus: {
+    label: "Stay Focused",
+    headline: "Stop context switching and move in one clear direction.",
+    subcopy: "Use a focused provider stack by category so your team spends less time debating and more time shipping.",
+    proof: "Clear partner decisions reduce operational drag and execution noise.",
+    urgency: "Confusion is expensive. Focus creates compounding execution advantage.",
+  },
+} as const;
+
+type ProviderOutcomeKey = keyof typeof PROVIDER_OUTCOME_FOCUS;
 
 function Logo({ domain, name }: { domain: string; name: string }) {
   const [failed, setFailed] = useState(false);
@@ -144,6 +170,7 @@ function ProvidersPageContent() {
   const [potentialSavingsLabel, setPotentialSavingsLabel] = useState("$1M+");
   const [featuredSetupIndex, setFeaturedSetupIndex] = useState(0);
   const [featuredSetupVisible, setFeaturedSetupVisible] = useState(true);
+  const [outcomeKey, setOutcomeKey] = useState<ProviderOutcomeKey>("speed");
 
   useEffect(() => {
     async function fetchProviders() {
@@ -226,6 +253,7 @@ function ProvidersPageContent() {
   }, [featuredSetups.length]);
 
   const remainingCount = total - freeProviders.length;
+  const activeOutcome = PROVIDER_OUTCOME_FOCUS[outcomeKey];
 
   function providerNarrative(provider: Provider): string {
     const valueText = provider.value ? `with ${provider.value} in startup benefits` : "with meaningful startup perks";
@@ -264,14 +292,66 @@ function ProvidersPageContent() {
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <div style={{ width: "40px", height: "4px", background: C.orange, borderRadius: "2px", marginBottom: "28px" }} />
-            <p style={{ fontSize: "11px", color: C.light, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "12px", fontWeight: 600 }}>Startup Credits</p>
-            <h1 style={{ fontSize: "clamp(36px, 5vw, 64px)", fontWeight: 900, letterSpacing: "-2px", color: C.ink, marginBottom: "12px", lineHeight: 1.02 }}>Providers</h1>
-            <p style={{ color: C.mid, fontSize: "16px", marginBottom: "40px", lineHeight: 1.6, maxWidth: "520px" }}>
-              {total}+ companies offering credits, discounts, and perks for startups.{" "}
-              {!isPro && <span style={{ color: C.ink, fontWeight: 700 }}>Unlock all for $149.</span>}
-              {isPro && <span style={{ color: C.ink, fontWeight: 700 }}>Full access unlocked. 🎉</span>}
+            <p style={{ fontSize: "11px", color: C.light, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "12px", fontWeight: 700 }}>Outcome Driven Providers</p>
+            <h1 style={{ fontSize: "clamp(34px, 5vw, 62px)", fontWeight: 900, letterSpacing: "-2px", color: C.ink, marginBottom: "12px", lineHeight: 1.02, maxWidth: "900px" }}>{activeOutcome.headline}</h1>
+            <p style={{ color: C.mid, fontSize: "16px", marginBottom: "18px", lineHeight: 1.65, maxWidth: "760px" }}>
+              {activeOutcome.subcopy}
             </p>
-            <div style={{ display: "flex", gap: "40px", flexWrap: "wrap", marginBottom: "40px" }}>
+
+            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "18px" }}>
+              {(Object.keys(PROVIDER_OUTCOME_FOCUS) as ProviderOutcomeKey[]).map((key) => (
+                <button
+                  key={key}
+                  onClick={() => setOutcomeKey(key)}
+                  style={{
+                    padding: "8px 14px",
+                    borderRadius: "999px",
+                    border: "1.5px solid",
+                    borderColor: outcomeKey === key ? C.ink : C.border,
+                    background: outcomeKey === key ? C.ink : C.bg,
+                    color: outcomeKey === key ? "#fff" : C.mid,
+                    fontSize: "12px",
+                    fontWeight: 700,
+                    cursor: "pointer",
+                    fontFamily: "inherit",
+                    transition: "all 0.12s",
+                  }}
+                >
+                  {PROVIDER_OUTCOME_FOCUS[key].label}
+                </button>
+              ))}
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))", gap: "10px", marginBottom: "24px", maxWidth: "960px" }}>
+              <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: "10px", padding: "12px 14px", display: "flex", alignItems: "center", gap: "10px" }}>
+                <Clock3 style={{ width: "14px", height: "14px", color: C.orange, flexShrink: 0 }} />
+                <div>
+                  <div style={{ fontSize: "11px", color: C.light, textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 700 }}>Execution speed</div>
+                  <div style={{ fontSize: "13px", color: C.ink, fontWeight: 700 }}>{activeOutcome.proof}</div>
+                </div>
+              </div>
+              <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: "10px", padding: "12px 14px", display: "flex", alignItems: "center", gap: "10px" }}>
+                <DollarSign style={{ width: "14px", height: "14px", color: C.orange, flexShrink: 0 }} />
+                <div>
+                  <div style={{ fontSize: "11px", color: C.light, textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 700 }}>Savings surface area</div>
+                  <div style={{ fontSize: "13px", color: C.ink, fontWeight: 700 }}>{potentialSavingsLabel} in potential savings across {total}+ providers.</div>
+                </div>
+              </div>
+              <div style={{ background: "#fff3ee", border: "1px solid rgba(255,77,0,0.25)", borderRadius: "10px", padding: "12px 14px", display: "flex", alignItems: "center", gap: "10px" }}>
+                <Target style={{ width: "14px", height: "14px", color: C.orange, flexShrink: 0 }} />
+                <div>
+                  <div style={{ fontSize: "11px", color: C.light, textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 700 }}>Urgency</div>
+                  <div style={{ fontSize: "13px", color: C.ink, fontWeight: 700 }}>{activeOutcome.urgency}</div>
+                </div>
+              </div>
+            </div>
+
+            <p style={{ color: C.mid, fontSize: "15px", marginBottom: "28px", lineHeight: 1.6, maxWidth: "760px" }}>
+              {total}+ companies offering credits, discounts, and perks for startups.{" "}
+              {!isPro && <span style={{ color: C.ink, fontWeight: 700 }}>Unlock all for $149 and make faster, lower-risk decisions now.</span>}
+              {isPro && <span style={{ color: C.ink, fontWeight: 700 }}>Full access unlocked. Keep execution tight.</span>}
+            </p>
+            <div style={{ display: "flex", gap: "40px", flexWrap: "wrap", marginBottom: "34px" }}>
               {[{ num: `${total}+`, label: "Total Providers" }, { num: "20+", label: "Categories" }, { num: potentialSavingsLabel, label: "Potential Savings" }].map(({ num, label }) => (
                 <div key={label}>
                   <div style={{ fontSize: "28px", fontWeight: 900, color: C.ink, letterSpacing: "-1px" }}>{num}</div>
