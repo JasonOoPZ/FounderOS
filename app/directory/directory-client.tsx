@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
-import { Search, ExternalLink, Lock, ArrowRight } from "lucide-react";
+import { Search, ExternalLink, Lock, ArrowRight, Clock3, DollarSign, Target } from "lucide-react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { FREE_DIRECTORY_COUNT } from "@/lib/constants";
@@ -21,6 +21,32 @@ const C = {
 };
 
 const FREE_COUNT = FREE_DIRECTORY_COUNT;
+
+const OUTCOME_FOCUS = {
+  speed: {
+    label: "Ship Faster",
+    headline: "Cut the research spiral and execute this week.",
+    subcopy: "Stop wasting nights hunting tools. Get a founder-grade shortlist and move from idea to shipped output faster.",
+    proof: "Founders can skip weeks of random tool discovery and start with proven options.",
+    urgency: "Every week of delay means lost momentum and slower distribution.",
+  },
+  burn: {
+    label: "Reduce Burn",
+    headline: "Protect runway by avoiding expensive tool mistakes.",
+    subcopy: "Choose stack decisions with confidence and avoid paying for bloated tools before product-market fit.",
+    proof: "Use curated picks and credits to stretch cash while still moving quickly.",
+    urgency: "Burn compounds monthly. Waste less now to buy more iterations later.",
+  },
+  focus: {
+    label: "Stay Focused",
+    headline: "Know what to use next so your team can stay in flow.",
+    subcopy: "Replace tool chaos with a clear operating stack by category, so your team can execute instead of debating.",
+    proof: "Clear decisions reduce context switching and improve weekly output.",
+    urgency: "Confusion is expensive. Focus is your unfair advantage early on.",
+  },
+} as const;
+
+type OutcomeKey = keyof typeof OUTCOME_FOCUS;
 
 type Resource = { title: string; url: string; category: string };
 
@@ -98,6 +124,7 @@ export default function DirectoryClient({ resources, categories }: { resources: 
   const [activeCategory, setActiveCategory] = useState("All");
   const [showSuggest, setShowSuggest] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [outcomeKey, setOutcomeKey] = useState<OutcomeKey>("speed");
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -129,6 +156,9 @@ export default function DirectoryClient({ resources, categories }: { resources: 
   });
 
   const sortedCategories = ["All", ...categories.filter(c => c !== "All")];
+  const activeOutcome = OUTCOME_FOCUS[outcomeKey];
+  const availableNow = isLoggedIn ? filtered.length : Math.min(FREE_COUNT, filtered.length);
+  const lockedCount = Math.max(filtered.length - FREE_COUNT, 0);
 
   return (
     <div style={{ background: C.bg, minHeight: "100vh", fontFamily: "'Inter', sans-serif", WebkitFontSmoothing: "antialiased" }}>
@@ -159,17 +189,70 @@ export default function DirectoryClient({ resources, categories }: { resources: 
       {/* HERO */}
       <div style={{ background: C.bg, borderBottom: `1px solid ${C.border}`, padding: "64px 48px 48px" }}>
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-          <div style={{ width: "40px", height: "4px", background: C.orange, borderRadius: "2px", marginBottom: "24px" }} />
-          <p style={{ fontSize: "11px", color: C.light, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "10px", fontWeight: 600 }}>Free Tier</p>
-          <h1 style={{ fontSize: "clamp(36px, 5vw, 60px)", fontWeight: 900, letterSpacing: "-2px", lineHeight: 1.02, color: C.ink, marginBottom: "12px" }}>
-            The startup toolkit.
+          <div style={{ width: "48px", height: "4px", background: C.orange, borderRadius: "2px", marginBottom: "20px" }} />
+          <p style={{ fontSize: "11px", color: C.light, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "10px", fontWeight: 700 }}>Results First Toolkit</p>
+          <h1 style={{ fontSize: "clamp(34px, 5vw, 58px)", fontWeight: 900, letterSpacing: "-2px", lineHeight: 1.02, color: C.ink, marginBottom: "12px", maxWidth: "920px" }}>
+            {activeOutcome.headline}
           </h1>
-          <p style={{ fontSize: "16px", color: C.mid, maxWidth: "480px", marginBottom: "32px", lineHeight: 1.6 }}>
-            {resources.length} curated resources across {categories.length} categories.{" "}
-            {!isLoggedIn && <span style={{ color: C.ink, fontWeight: 700 }}>Sign in for full access.</span>}
-            {isLoggedIn && <span style={{ color: C.ink, fontWeight: 700 }}>Full access unlocked.</span>}
+          <p style={{ fontSize: "16px", color: C.mid, maxWidth: "760px", marginBottom: "20px", lineHeight: 1.65 }}>
+            {activeOutcome.subcopy}
           </p>
-          <div style={{ position: "relative", maxWidth: "480px" }}>
+
+          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "18px" }}>
+            {(Object.keys(OUTCOME_FOCUS) as OutcomeKey[]).map((key) => (
+              <button
+                key={key}
+                onClick={() => setOutcomeKey(key)}
+                style={{
+                  padding: "8px 14px",
+                  borderRadius: "999px",
+                  border: "1.5px solid",
+                  borderColor: outcomeKey === key ? C.ink : C.border,
+                  background: outcomeKey === key ? C.ink : C.bg,
+                  color: outcomeKey === key ? "#fff" : C.mid,
+                  fontSize: "12px",
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  fontFamily: "inherit",
+                  transition: "all 0.12s",
+                }}
+              >
+                {OUTCOME_FOCUS[key].label}
+              </button>
+            ))}
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "10px", marginBottom: "24px", maxWidth: "960px" }}>
+            <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: "10px", padding: "12px 14px", display: "flex", alignItems: "center", gap: "10px" }}>
+              <Clock3 style={{ width: "14px", height: "14px", color: C.orange, flexShrink: 0 }} />
+              <div>
+                <div style={{ fontSize: "11px", color: C.light, textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 700 }}>Time to action</div>
+                <div style={{ fontSize: "13px", color: C.ink, fontWeight: 700 }}>{activeOutcome.proof}</div>
+              </div>
+            </div>
+            <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: "10px", padding: "12px 14px", display: "flex", alignItems: "center", gap: "10px" }}>
+              <DollarSign style={{ width: "14px", height: "14px", color: C.orange, flexShrink: 0 }} />
+              <div>
+                <div style={{ fontSize: "11px", color: C.light, textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 700 }}>Runway impact</div>
+                <div style={{ fontSize: "13px", color: C.ink, fontWeight: 700 }}>{availableNow} ready now, {lockedCount} more unlocked with sign in.</div>
+              </div>
+            </div>
+            <div style={{ background: "#fff3ee", border: "1px solid rgba(255,77,0,0.25)", borderRadius: "10px", padding: "12px 14px", display: "flex", alignItems: "center", gap: "10px" }}>
+              <Target style={{ width: "14px", height: "14px", color: C.orange, flexShrink: 0 }} />
+              <div>
+                <div style={{ fontSize: "11px", color: C.light, textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 700 }}>Urgency</div>
+                <div style={{ fontSize: "13px", color: C.ink, fontWeight: 700 }}>{activeOutcome.urgency}</div>
+              </div>
+            </div>
+          </div>
+
+          <p style={{ fontSize: "14px", color: C.mid, maxWidth: "760px", marginBottom: "18px", lineHeight: 1.6 }}>
+            {resources.length} curated resources across {categories.length} categories.{" "}
+            {!isLoggedIn && <span style={{ color: C.ink, fontWeight: 700 }}>Sign in free to unlock the full operating stack now.</span>}
+            {isLoggedIn && <span style={{ color: C.ink, fontWeight: 700 }}>Full access unlocked. Stay in execution mode.</span>}
+          </p>
+
+          <div style={{ position: "relative", maxWidth: "560px" }}>
             <Search style={{ position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)", width: "15px", height: "15px", color: C.light, pointerEvents: "none" }} />
             <input type="text" placeholder="Search tools, resources..." value={search} onChange={e => setSearch(e.target.value)}
               style={{ width: "100%", paddingLeft: "40px", paddingRight: "16px", paddingTop: "11px", paddingBottom: "11px", border: `1.5px solid ${C.border}`, borderRadius: "8px", fontSize: "14px", background: C.surface, color: C.ink, outline: "none", boxSizing: "border-box", fontFamily: "inherit", transition: "border-color 0.15s" }}
