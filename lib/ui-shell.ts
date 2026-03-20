@@ -1,3 +1,5 @@
+import { APP_THEME } from "@/lib/ui-theme";
+
 export const SHELL_LAYOUT = {
   topNavHeight: 58,
   pageXPadding: 48,
@@ -6,10 +8,10 @@ export const SHELL_LAYOUT = {
 } as const;
 
 export const SHELL_COLORS = {
-  bg: "#ffffff",
-  ink: "#0a0a0a",
-  mid: "#6b6b6b",
-  border: "#e5e5e5",
-  orange: "#ff4d00",
-  orangeHover: "#e04400",
+  bg: APP_THEME.bg,
+  ink: APP_THEME.ink,
+  mid: APP_THEME.mid,
+  border: APP_THEME.border,
+  orange: APP_THEME.orange,
+  orangeHover: APP_THEME.orangeHover,
 } as const;

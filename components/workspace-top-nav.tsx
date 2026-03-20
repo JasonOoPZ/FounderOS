@@ -1,17 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { SHELL_COLORS, SHELL_LAYOUT } from "@/lib/ui-shell";
+import { SHELL_LAYOUT } from "@/lib/ui-shell";
+import { APP_THEME } from "@/lib/ui-theme";
 
-const C = {
-  bg: SHELL_COLORS.bg,
-  ink: SHELL_COLORS.ink,
-  mid: SHELL_COLORS.mid,
-  border: SHELL_COLORS.border,
-  orange: SHELL_COLORS.orange,
-  orangeHover: SHELL_COLORS.orangeHover,
-  radius: "8px",
-};
+const C = APP_THEME;
 
 type WorkspaceView = "Directory" | "Providers" | "Must Haves";
 

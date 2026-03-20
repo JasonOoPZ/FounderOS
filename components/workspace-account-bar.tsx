@@ -3,18 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ChevronDown, CreditCard, LayoutDashboard, LogOut, Sparkles } from "lucide-react";
-import { SHELL_COLORS, SHELL_LAYOUT } from "@/lib/ui-shell";
+import { SHELL_LAYOUT } from "@/lib/ui-shell";
+import { APP_THEME } from "@/lib/ui-theme";
 
 const C = {
-  bg: SHELL_COLORS.bg,
-  surface: "#f7f7f5",
-  ink: SHELL_COLORS.ink,
-  mid: SHELL_COLORS.mid,
-  light: "#a3a3a3",
-  border: SHELL_COLORS.border,
-  orange: SHELL_COLORS.orange,
-  orangeHover: SHELL_COLORS.orangeHover,
-  radius: "8px",
+  ...APP_THEME,
 };
 
 type WorkspaceAccountBarProps = {

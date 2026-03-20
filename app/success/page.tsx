@@ -5,17 +5,9 @@ import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { CheckCircle, ArrowRight, Zap } from "lucide-react";
+import { APP_THEME } from "@/lib/ui-theme";
 
-const C = {
-  bg:      "#ffffff",
-  surface: "#f7f7f5",
-  ink:     "#0a0a0a",
-  mid:     "#6b6b6b",
-  light:   "#a3a3a3",
-  border:  "#e5e5e5",
-  orange:  "#ff4d00",
-  radius:  "8px",
-};
+const C = APP_THEME;
 
 const nextSteps = [
   { step: "1", title: "Go to your dashboard", body: "Your Credits and Providers tabs are now unlocked with full instructions.", href: "/dashboard" },

@@ -3,11 +3,9 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
+import { APP_THEME } from "@/lib/ui-theme";
 
-const C = {
-  orange: "#ff4d00",
-  orangeHover: "#e04400",
-};
+const C = APP_THEME;
 
 export default function LoginPage() {
   const router = useRouter();

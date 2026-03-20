@@ -9,19 +9,9 @@ import { supabase } from "@/lib/supabase";
 import { WorkspaceAccountBar } from "@/components/workspace-account-bar";
 import { WorkspaceTopNav } from "@/components/workspace-top-nav";
 import { SHELL_LAYOUT } from "@/lib/ui-shell";
+import { APP_THEME } from "@/lib/ui-theme";
 
-const C = {
-  bg:          "#ffffff",
-  surface:     "#f7f7f5",
-  ink:         "#0a0a0a",
-  mid:         "#6b6b6b",
-  light:       "#a3a3a3",
-  border:      "#e5e5e5",
-  orange:      "#ff4d00",
-  orangeHover: "#e04400",
-  tagBg:       "#f0f0ee",
-  radius:      "8px",
-};
+const C = APP_THEME;
 
 type Provider = {
   name: string;
