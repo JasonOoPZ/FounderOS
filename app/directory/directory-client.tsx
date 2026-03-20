@@ -6,6 +6,7 @@ import { Search, ExternalLink, Lock, ArrowRight, Clock3, DollarSign, Target } fr
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { FREE_DIRECTORY_COUNT } from "@/lib/constants";
+import { WorkspaceAccountBar } from "@/components/workspace-account-bar";
 
 const C = {
   bg:          "#ffffff",
@@ -124,13 +125,29 @@ export default function DirectoryClient({ resources, categories }: { resources: 
   const [activeCategory, setActiveCategory] = useState("All");
   const [showSuggest, setShowSuggest] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
+  const [isPro, setIsPro] = useState(false);
   const [outcomeKey, setOutcomeKey] = useState<OutcomeKey>("speed");
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setIsLoggedIn(!!session);
+      setUserEmail(session?.user.email ?? "");
+
+      if (!session?.user.id) {
+        setIsPro(false);
+        return;
+      }
+
+      const { data } = await supabase.from("users").select("is_pro").eq("id", session.user.id).single();
+      setIsPro(data?.is_pro ?? false);
     });
   }, []);
+
+  async function handleSignOut() {
+    await supabase.auth.signOut();
+    window.location.href = "/";
+  }
 
   const filtered = resources.filter((r) => {
     const matchSearch = (r.title ?? "").toLowerCase().includes(search.toLowerCase()) ||
@@ -188,6 +205,13 @@ export default function DirectoryClient({ resources, categories }: { resources: 
 
       {/* HERO */}
       <div style={{ background: C.bg, borderBottom: `1px solid ${C.border}`, padding: "64px 48px 48px" }}>
+        <WorkspaceAccountBar
+          currentView="Directory"
+          email={userEmail}
+          isLoggedIn={isLoggedIn}
+          isPro={isPro}
+          onSignOut={handleSignOut}
+        />
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <div style={{ width: "48px", height: "4px", background: C.orange, borderRadius: "2px", marginBottom: "20px" }} />
           <p style={{ fontSize: "11px", color: C.light, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "10px", fontWeight: 700 }}>Results First Toolkit</p>

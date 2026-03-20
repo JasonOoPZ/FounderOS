@@ -1,0 +1,138 @@
+"use client";
+
+import Link from "next/link";
+import { LayoutDashboard, LogOut, Sparkles } from "lucide-react";
+
+const C = {
+  bg: "#ffffff",
+  surface: "#f7f7f5",
+  ink: "#0a0a0a",
+  mid: "#6b6b6b",
+  light: "#a3a3a3",
+  border: "#e5e5e5",
+  orange: "#ff4d00",
+  orangeHover: "#e04400",
+  radius: "8px",
+};
+
+type WorkspaceAccountBarProps = {
+  currentView: string;
+  email?: string | null;
+  isLoggedIn: boolean;
+  isPro: boolean;
+  onSignOut?: () => void;
+};
+
+export function WorkspaceAccountBar({ currentView, email, isLoggedIn, isPro, onSignOut }: WorkspaceAccountBarProps) {
+  return (
+    <div
+      style={{
+        background: "linear-gradient(135deg, #ffffff 0%, #faf7f3 100%)",
+        border: `1px solid ${C.border}`,
+        borderRadius: "14px",
+        padding: "16px 18px",
+        marginBottom: "22px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: "16px",
+        flexWrap: "wrap",
+        boxShadow: "0 8px 24px rgba(0,0,0,0.04)",
+      }}
+    >
+      <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+          <span style={{ fontSize: "11px", color: C.light, letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 700 }}>Workspace</span>
+          <span style={{ fontSize: "11px", color: C.light }}>•</span>
+          <span style={{ fontSize: "11px", color: C.ink, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>{currentView}</span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+          <span style={{ fontSize: "14px", color: C.ink, fontWeight: 700 }}>{isLoggedIn ? (email || "Signed in") : "Guest mode"}</span>
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px",
+              borderRadius: "999px",
+              padding: "5px 10px",
+              background: isPro ? C.ink : C.bg,
+              color: isPro ? "#fff" : C.mid,
+              border: isPro ? "1px solid transparent" : `1px solid ${C.border}`,
+              fontSize: "11px",
+              fontWeight: 700,
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+            }}
+          >
+            <Sparkles style={{ width: "11px", height: "11px" }} />
+            {isPro ? "Pro Access" : isLoggedIn ? "Free Access" : "Not Signed In"}
+          </span>
+        </div>
+      </div>
+
+      <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+        <Link href="/dashboard" style={{ textDecoration: "none" }}>
+          <button
+            style={{
+              background: C.bg,
+              color: C.mid,
+              border: `1px solid ${C.border}`,
+              borderRadius: C.radius,
+              padding: "9px 14px",
+              fontWeight: 600,
+              cursor: "pointer",
+              fontSize: "13px",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "7px",
+              fontFamily: "inherit",
+            }}
+          >
+            <LayoutDashboard style={{ width: "13px", height: "13px" }} /> Dashboard
+          </button>
+        </Link>
+        {isLoggedIn && onSignOut ? (
+          <button
+            onClick={onSignOut}
+            style={{
+              background: C.orange,
+              color: "#fff",
+              border: "none",
+              borderRadius: C.radius,
+              padding: "9px 14px",
+              fontWeight: 700,
+              cursor: "pointer",
+              fontSize: "13px",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "7px",
+              fontFamily: "inherit",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = C.orangeHover)}
+            onMouseLeave={(e) => (e.currentTarget.style.background = C.orange)}
+          >
+            <LogOut style={{ width: "13px", height: "13px" }} /> Sign out
+          </button>
+        ) : (
+          <Link href="/login" style={{ textDecoration: "none" }}>
+            <button
+              style={{
+                background: C.orange,
+                color: "#fff",
+                border: "none",
+                borderRadius: C.radius,
+                padding: "9px 14px",
+                fontWeight: 700,
+                cursor: "pointer",
+                fontSize: "13px",
+                fontFamily: "inherit",
+              }}
+            >
+              Sign In
+            </button>
+          </Link>
+        )}
+      </div>
+    </div>
+  );
+}

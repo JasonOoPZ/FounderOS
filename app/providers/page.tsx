@@ -5,12 +5,8 @@ import { motion, useInView } from "framer-motion";
 import { Search, Lock, ArrowRight, Zap, ExternalLink, Clock3, DollarSign, Target } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { supabase } from "@/lib/supabase";
+import { WorkspaceAccountBar } from "@/components/workspace-account-bar";
 
 const C = {
   bg:          "#ffffff",
@@ -166,6 +162,7 @@ function ProvidersPageContent() {
   const [loading, setLoading] = useState(true);
   const [isPro, setIsPro] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
   const [selectedProvider, setSelectedProvider] = useState<Provider | null>(null);
   const [potentialSavingsLabel, setPotentialSavingsLabel] = useState("$1M+");
   const [featuredSetupIndex, setFeaturedSetupIndex] = useState(0);
@@ -176,6 +173,7 @@ function ProvidersPageContent() {
     async function fetchProviders() {
       try {
         const { data: { session } } = await supabase.auth.getSession();
+        setUserEmail(session?.user.email ?? "");
         const headers: Record<string, string> = {};
         if (session?.access_token) {
           headers["Authorization"] = `Bearer ${session.access_token}`;
@@ -261,6 +259,11 @@ function ProvidersPageContent() {
     return `${provider.name} is a ${provider.category.toLowerCase()} partner ${valueText}${tagText}. This can help founders reduce burn, ship faster, and unlock compounding advantages early.`;
   }
 
+  async function handleSignOut() {
+    await supabase.auth.signOut();
+    router.push("/");
+  }
+
   return (
     <div style={{ background: C.bg, minHeight: "100vh", fontFamily: "'Inter', sans-serif", WebkitFontSmoothing: "antialiased" }}>
 
@@ -290,6 +293,13 @@ function ProvidersPageContent() {
       {/* HERO */}
       <div style={{ background: C.bg, borderBottom: `1px solid ${C.border}`, padding: "72px 48px 56px" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+          <WorkspaceAccountBar
+            currentView="Providers"
+            email={userEmail}
+            isLoggedIn={isLoggedIn}
+            isPro={isPro}
+            onSignOut={handleSignOut}
+          />
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <div style={{ width: "40px", height: "4px", background: C.orange, borderRadius: "2px", marginBottom: "28px" }} />
             <p style={{ fontSize: "11px", color: C.light, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "12px", fontWeight: 700 }}>Outcome Driven Providers</p>

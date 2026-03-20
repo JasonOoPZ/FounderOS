@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Lock, CheckCircle, LogOut, Zap, ArrowRight, CreditCard, BookOpen, Grid, ExternalLink, ChevronDown, ChevronRight, Search, AlertCircle } from "lucide-react";
 import creditsData from "@/_data/credits.json";
 import { supabase } from "@/lib/supabase";
+import { WorkspaceAccountBar } from "@/components/workspace-account-bar";
 
 interface User {
   id: string;
@@ -329,6 +330,8 @@ export default function DashboardPage() {
     ? FEATURED_SETUP_DETAILS[activeFeaturedSetup.name]
     : null;
 
+  const workspaceViewLabel = activeTab === "providers" ? "Providers" : "Dashboard";
+
   const showFeaturedSetup =
     !!activeFeaturedSetup &&
     providerSearch.trim().length === 0;
@@ -425,7 +428,6 @@ export default function DashboardPage() {
         )}
 
         <div style={{ padding: "16px" }}>
-          <div style={{ fontSize: "12px", color: C.light, marginBottom: "8px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{user?.email}</div>
           <button onClick={handleSignOut} style={{ display: "flex", alignItems: "center", gap: "6px", background: "none", border: "none", cursor: "pointer", color: C.light, fontSize: "13px", padding: 0 }}>
             <LogOut style={{ width: "13px", height: "13px" }} /> Sign out
           </button>
@@ -434,6 +436,13 @@ export default function DashboardPage() {
 
       {/* MAIN */}
       <main style={{ marginLeft: "220px", flex: 1, padding: "40px 48px" }}>
+        <WorkspaceAccountBar
+          currentView={workspaceViewLabel}
+          email={user?.email ?? ""}
+          isLoggedIn={true}
+          isPro={isPro}
+          onSignOut={handleSignOut}
+        />
 
         {/* PAYWALL */}
         {!isPro ? (
